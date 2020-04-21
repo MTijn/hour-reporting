@@ -52,7 +52,6 @@
             <groupId>com.microsoft.graph</groupId>
             <artifactId>microsoft-graph</artifactId>
             <version>1.7.1</version>
-            <type>pom</type>
         </dependency>
 
         <dependency>

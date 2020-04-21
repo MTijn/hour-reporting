@@ -10,7 +10,7 @@ import java.time.LocalDate
 class HomeController(private var calendar: Calendar) {
     @GetMapping(value = ["/"])
     fun displayArticle(model: MutableMap<String, Any>): ModelAndView {
-        calendar.getEventsForADay(LocalDate.now())
+        val page = calendar.getEventsForADay(LocalDate.now())
         return ModelAndView("index", model)
     }
 }
