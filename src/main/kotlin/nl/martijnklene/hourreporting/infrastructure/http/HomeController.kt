@@ -6,8 +6,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import java.time.LocalDate
 
 @Controller
@@ -32,10 +30,5 @@ class HomeController(
             )
         )
         return "index"
-    }
-
-    @PostMapping(value = ["/enter"])
-    fun addTimeEntries(@RequestBody postedItems: List<Any>): String {
-        return ""
     }
 }

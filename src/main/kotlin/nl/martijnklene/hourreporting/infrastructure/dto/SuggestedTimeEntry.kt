@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 data class SuggestedTimeEntry(
     val duration: Duration,
-    val projectId: String,
+    val taskId: String,
     val projectDescription: String,
     val date: LocalDate
 )

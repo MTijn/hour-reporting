@@ -16,7 +16,13 @@ class Projects(
     @Value("\${clockify.user}") private val user: String,
     private val objectMapper: ObjectMapper
 ) {
+    private var clockifyProjects: MutableList<Project> = mutableListOf()
+
     fun projectsForUser(): List<Project> {
+        if (clockifyProjects.isNotEmpty()) {
+            return clockifyProjects
+        }
+
         val httpClient = HttpClients.createDefault()
         val request = HttpGet(String.format(
             "https://global.api.clockify.me/workspaces/%s/projects/user/%s/filter?page=1&search=&clientId=&include=ONLY_NOT_FAVORITES",
@@ -27,9 +33,10 @@ class Projects(
         val response = httpClient.execute(request)
 
         val toString = EntityUtils.toString(response.entity)
-        return objectMapper.readValue(
+        clockifyProjects = objectMapper.readValue(
             toString,
-            object : TypeReference<List<Project>>() {}
+            object : TypeReference<MutableList<Project>>() {}
         );
+        return clockifyProjects
     }
 }
