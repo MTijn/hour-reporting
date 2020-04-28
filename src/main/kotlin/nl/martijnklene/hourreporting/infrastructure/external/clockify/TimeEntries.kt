@@ -48,8 +48,9 @@ class TimeEntries(
                 user
             )
         )
-        request.entity = StringEntity(timeEntry.toString())
+        request.entity = StringEntity(objectMapper.writeValueAsString(timeEntry))
         request.addHeader("X-API-KEY", apiKey)
+        request.addHeader("content-type", "application/json")
         val response = httpClient.execute(request)
         httpClient.close()
     }

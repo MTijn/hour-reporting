@@ -1,13 +1,13 @@
 package nl.martijnklene.hourreporting.infrastructure.external.clockify.dto
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class PostTimeEntry(
     val billable: Boolean,
     val customFields: List<String>?,
-    val end: LocalDateTime,
+    val end: ZonedDateTime,
     val projectId: String,
-    val start: LocalDateTime,
+    val start: ZonedDateTime,
     val tagIds: List<String>?,
     val taskId: String
 )

@@ -2,7 +2,7 @@ package nl.martijnklene.hourreporting.infrastructure.external.clockify.dto
 
 data class TimeEntry(
     val billable: Boolean,
-    val description: String,
+    val description: String?,
     val id: String?,
     val isLocked: Boolean,
     val projectId: String,
