@@ -1,10 +1,10 @@
 package nl.martijnklene.hourreporting.infrastructure.external.clockify.dto
 
 import java.time.Duration
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class TimeInterval(
     val duration: Duration,
-    val start: LocalDateTime,
-    val end: LocalDateTime
+    val start: ZonedDateTime,
+    val end: ZonedDateTime
 )
