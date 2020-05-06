@@ -25,21 +25,8 @@ class HomeController(
             "suggestedEntries",
             suggestionCalculator.suggestHoursForARangeOfDays(
                 listOf(
-                    LocalDate.parse("2020-04-01"),
-                    LocalDate.parse("2020-04-02"),
-                    LocalDate.parse("2020-04-03"),
-                    LocalDate.parse("2020-04-06"),
-                    LocalDate.parse("2020-04-07"),
-                    LocalDate.parse("2020-04-08"),
-                    LocalDate.parse("2020-04-09"),
-                    LocalDate.parse("2020-04-10"),
-                    LocalDate.parse("2020-04-20"),
-                    LocalDate.parse("2020-04-21"),
-                    LocalDate.parse("2020-04-22"),
-                    LocalDate.parse("2020-04-23"),
-                    LocalDate.parse("2020-04-24"),
-                    LocalDate.parse("2020-04-27"),
-                    LocalDate.parse("2020-04-28")
+                    LocalDate.parse("2020-05-04"),
+                    LocalDate.parse("2020-05-05")
                 ),
                 authentication
             )

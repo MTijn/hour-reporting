@@ -6,14 +6,16 @@ import com.microsoft.graph.requests.extensions.IEventCollectionPage
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Component
 class Calendar(private val graphServiceClientProvider: GraphClientProvider) {
     fun getEventsForADay(authentication: Authentication, date: LocalDate): IEventCollectionPage {
         val options = LinkedList<Option>()
-        options.add(QueryOption("startDateTime", date.atStartOfDay()))
-        options.add(QueryOption("endDateTime", date.atTime(23, 59)))
+        options.add(QueryOption("startDateTime", date.atStartOfDay().atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
+        options.add(QueryOption("endDateTime", date.atTime(23, 59).atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
 
         return graphServiceClientProvider.provideGraphClient(authentication)
             .me()
