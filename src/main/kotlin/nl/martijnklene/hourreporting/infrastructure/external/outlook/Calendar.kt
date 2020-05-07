@@ -14,8 +14,8 @@ import java.util.*
 class Calendar(private val graphServiceClientProvider: GraphClientProvider) {
     fun getEventsForADay(authentication: Authentication, date: LocalDate): IEventCollectionPage {
         val options = LinkedList<Option>()
-        options.add(QueryOption("startDateTime", date.atStartOfDay().atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
-        options.add(QueryOption("endDateTime", date.atTime(23, 59).atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
+        options.add(QueryOption("startDateTime", date.atTime(7, 0).atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
+        options.add(QueryOption("endDateTime", date.atTime(19, 0).atZone(ZoneId.of("Europe/Amsterdam")).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))
 
         return graphServiceClientProvider.provideGraphClient(authentication)
             .me()

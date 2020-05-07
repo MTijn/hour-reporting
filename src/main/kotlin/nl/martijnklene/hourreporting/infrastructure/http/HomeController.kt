@@ -21,15 +21,10 @@ class HomeController(
 ) {
     @GetMapping(value = ["/"])
     fun displayArticle(model: ModelMap, authentication: Authentication): String {
-        val dates = datesSuggester.suggestDaysForTheAuthenticatedUser(authentication)
         timeEntries.lastClockifyTimeEntry()?.let { model.addAttribute("lastTimeEntry", it) }
-        if (dates.isEmpty()) {
-            return "index"
-        }
         model.addAttribute(
             "suggestedEntries",
-            suggestionCalculator.suggestHoursForARangeOfDays(
-                dates,
+            suggestionCalculator.suggestHoursForAnAuthenticatedUser(
                 authentication
             )
         )

@@ -16,7 +16,8 @@ class HoursSuggestionCalculator(
     private val calendar: Calendar,
     private val categoryMapper: CategoryMapper,
     private val ignoredCategories: IgnoredCategories,
-    private val projects: Projects
+    private val projects: Projects,
+    private val datesSuggester: DatesProvider
 ) {
     fun suggestHoursForADay(authentication: Authentication, date: LocalDate): SuggestedTimeEntry {
         var workingHours = Duration.parse("PT8H")
@@ -52,7 +53,8 @@ class HoursSuggestionCalculator(
         );
     }
 
-    fun suggestHoursForARangeOfDays(dates: List<LocalDate>, authentication: Authentication): List<SuggestedTimeEntry> {
+    fun suggestHoursForAnAuthenticatedUser(authentication: Authentication): List<SuggestedTimeEntry> {
+        val dates = datesSuggester.suggestDaysForTheAuthenticatedUser(authentication)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
         dates.forEach { it -> suggestedEntries.add(this.suggestHoursForADay(authentication, it))}
         return suggestedEntries
