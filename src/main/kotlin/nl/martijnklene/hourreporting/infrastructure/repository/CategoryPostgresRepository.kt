@@ -25,6 +25,10 @@ class CategoryPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTem
         )
     }
 
+    override fun findCategoriesByUserId(userId: UUID): List<Category> {
+        TODO("Not yet implemented")
+    }
+
     @Throws(Exception::class)
     override fun deleteCategoryById(id: UUID) {
         val parameterSource = MapSqlParameterSource()

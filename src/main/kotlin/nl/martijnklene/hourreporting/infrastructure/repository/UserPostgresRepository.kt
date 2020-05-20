@@ -1,13 +1,18 @@
 package nl.martijnklene.hourreporting.infrastructure.repository
 
 import nl.martijnklene.hourreporting.application.model.User
+import nl.martijnklene.hourreporting.application.repository.CategoryRepository
 import nl.martijnklene.hourreporting.application.repository.UserRepository
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.stereotype.Repository
 import java.util.*
 
-
-class UserPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTemplate): UserRepository {
+@Repository
+class UserPostgresRepository(
+    private val jdbcTemplate: NamedParameterJdbcTemplate,
+    private val categoryRepository: CategoryRepository
+): UserRepository {
     @Throws(Exception::class)
     override fun save(user: User) {
         val parameterSource = MapSqlParameterSource()
@@ -25,7 +30,7 @@ class UserPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTemplat
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("name"),
-                emptyList(),
+                categoryRepository.findCategoriesByUserId(UUID.fromString("id")),
                 resultSet.getString("clockify_api_key")
             )
         }.firstOrNull()
