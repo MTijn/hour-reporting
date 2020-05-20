@@ -5,6 +5,6 @@ import java.util.*
 
 interface UserRepository {
     fun save(user: User)
-    fun findOneUserById(id: UUID)
+    fun findOneUserById(id: UUID): User?
     fun deleteUserById(id: UUID)
 }

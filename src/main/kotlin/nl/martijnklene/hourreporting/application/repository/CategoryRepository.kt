@@ -6,5 +6,5 @@ import java.util.*
 interface CategoryRepository {
     fun save(category: Category)
     fun deleteCategoryById(id: UUID)
-    fun deleteCategoriesFromUserId(id: UUID)
+    fun deleteCategoriesFromUserId(userId: UUID)
 }

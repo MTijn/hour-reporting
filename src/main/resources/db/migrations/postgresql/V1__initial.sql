@@ -3,7 +3,8 @@ create schema if not exists hour_reporting;
 create table hour_reporting."user"
 (
     "id" uuid not null,
-    "name" varchar not null
+    "name" varchar not null,
+    "clockify_api_key" varchar not null
 );
 
 create table category
