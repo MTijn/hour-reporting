@@ -18,14 +18,14 @@ class UserPostgresRepository(
         val parameterSource = MapSqlParameterSource()
             .addValue("id", user.id.toString())
             .addValue("name", user.name)
-        jdbcTemplate.update("insert into user (id, name) values (:id, :name)", parameterSource)
+        jdbcTemplate.update("insert into `user` (`id`, `name`) values (:id, :name)", parameterSource)
     }
 
     @Throws(Exception::class)
     override fun findOneUserById(id: UUID): User? {
         val parameterSource = MapSqlParameterSource()
-        parameterSource.addValue("id", id.toString())
-        return jdbcTemplate.query("select id, name, clockify_api_key from user where id = :id", parameterSource) {
+        parameterSource.addValue("id", id)
+        return jdbcTemplate.query("select id, name, clockify_api_key from \"user\" where id = :id", parameterSource) {
             resultSet, _ ->
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
@@ -40,6 +40,6 @@ class UserPostgresRepository(
     override fun deleteUserById(id: UUID) {
         val parameterSource = MapSqlParameterSource()
             .addValue("id", id.toString())
-        jdbcTemplate.update("delete from user where id = :id", parameterSource)
+        jdbcTemplate.update("delete from \"user\" where id = :id", parameterSource)
     }
 }

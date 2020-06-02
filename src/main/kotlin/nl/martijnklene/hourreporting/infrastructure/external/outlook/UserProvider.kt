@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 
 @Component
-class OutlookUserFinder(private val graphServiceClientProvider: GraphClientProvider) {
+class UserProvider(private val graphServiceClientProvider: GraphClientProvider) {
     fun findOutlookUser(authentication: Authentication): User {
         return graphServiceClientProvider.provideGraphClient(authentication).me().buildRequest().get()
     }
