@@ -1,8 +1,10 @@
 package nl.martijnklene.hourreporting.infrastructure.http
 
+import nl.martijnklene.hourreporting.application.model.User
 import nl.martijnklene.hourreporting.application.repository.UserRepository
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.CategoriesProvider
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.UserProvider
+import nl.martijnklene.hourreporting.infrastructure.http.dto.CategoriesDto
 import nl.martijnklene.hourreporting.infrastructure.http.dto.UserDto
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
@@ -20,6 +22,11 @@ class UserController(
     private val userProvider: UserProvider,
     private val categoriesProvider: CategoriesProvider
 ) {
+    @GetMapping("/user")
+    fun viewUser(): Any {
+        return "user"
+    }
+
     @GetMapping("/user/welcome")
     fun welcomeUser(authentication: Authentication, modelMap: ModelMap): Any {
         val user = userProvider.findOutlookUser(authentication)
@@ -33,9 +40,21 @@ class UserController(
 
     @PostMapping("/user")
     fun createUser(authentication: Authentication, @ModelAttribute user: UserDto): Any {
-        val key = user.apiKey
+        val outlookUser = userProvider.findOutlookUser(authentication)
+        userRepository.save(User(
+            UUID.fromString(outlookUser.id),
+            outlookUser.displayName,
+            emptyList(),
+            user.apiKey
+        ))
         return RedirectView("/")
     }
+
+    @PostMapping("/user/categories")
+    fun storeCategories(@ModelAttribute categories: CategoriesDto): Any {
+        return RedirectView("/user")
+    }
+
     @GetMapping("/user/delete/{userId}")
     fun deleteUser(@PathVariable userId: String): RedirectView {
         userRepository.deleteUserById(UUID.fromString(userId))

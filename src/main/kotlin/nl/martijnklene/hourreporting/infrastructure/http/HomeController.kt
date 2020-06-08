@@ -26,7 +26,7 @@ class HomeController(
     @GetMapping("/")
     fun displayArticle(model: ModelMap, authentication: Authentication): Any {
         val user = userProvider.findOutlookUser(authentication)
-        if (userRepository.findOneUserById(UUID.fromString(user!!.id)) == null) {
+        if (userRepository.findOneUserById(UUID.fromString(user.id)) == null) {
             return RedirectView("/user/welcome")
         }
         timeEntries.lastClockifyTimeEntry()?.let { model.addAttribute("lastTimeEntry", it) }

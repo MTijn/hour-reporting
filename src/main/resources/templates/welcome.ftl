@@ -34,28 +34,14 @@
         <div class="row">
             <div class="col-12">
                 <h2>Welcome ${userName}</h2>
-                <p>Categories</p>
+                <p>In order for this application to work you will need to provide an API key from Clockify</p>
+                <p>Please create one and copy it into the input field</p>
+                <p>The API key itself is stored in the app's database in an encrypted way</p>
                 <form action="/user" method="post">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Clockify Entry</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <#list categories as category>
-                            <tr>
-                                <td>${category.name}</td>
-                                <td>
-                                    <select id="${category.id}" name="categories">
-                                        <option value="1">Something</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </#list>
-                        </tbody>
-                    </table>
+                    <div class="form-group">
+                        <label for="apiKey">Clockify API key</label>
+                        <input type="password" class="form-control" id="apiKey" name="apiKey">
+                    </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <input type="submit" value="Send">
                 </form>

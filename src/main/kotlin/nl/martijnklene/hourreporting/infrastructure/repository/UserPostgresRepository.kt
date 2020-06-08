@@ -16,21 +16,26 @@ class UserPostgresRepository(
     @Throws(Exception::class)
     override fun save(user: User) {
         val parameterSource = MapSqlParameterSource()
-            .addValue("id", user.id.toString())
+            .addValue("id", user.id)
             .addValue("name", user.name)
-        jdbcTemplate.update("insert into `user` (`id`, `name`) values (:id, :name)", parameterSource)
+            .addValue("api_key", user.clockifyApiKey)
+        jdbcTemplate.update(
+            "insert into \"user\" (\"id\", \"name\", \"clockify_api_key\") values (:id, :name, :api_key)",
+            parameterSource
+        )
     }
 
     @Throws(Exception::class)
     override fun findOneUserById(id: UUID): User? {
-        val parameterSource = MapSqlParameterSource()
-        parameterSource.addValue("id", id)
+        val parameterSource = MapSqlParameterSource().addValue("id", id)
         return jdbcTemplate.query("select id, name, clockify_api_key from \"user\" where id = :id", parameterSource) {
             resultSet, _ ->
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("name"),
-                categoryRepository.findCategoriesByUserId(UUID.fromString("id")),
+                categoryRepository.findCategoriesByUserId(
+                    UUID.fromString(resultSet.getString("id"))
+                ),
                 resultSet.getString("clockify_api_key")
             )
         }.firstOrNull()

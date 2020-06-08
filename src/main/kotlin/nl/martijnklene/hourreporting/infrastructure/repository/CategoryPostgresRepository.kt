@@ -26,7 +26,19 @@ class CategoryPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTem
     }
 
     override fun findCategoriesByUserId(userId: UUID): List<Category> {
-        TODO("Not yet implemented")
+        val parameterSource = MapSqlParameterSource().addValue("userId", userId)
+        return jdbcTemplate.query(
+            "select id, user_id, name, clockify_project_id, \"default\" from category where user_id = :userId",
+            parameterSource
+        ) { it, _ ->
+            return@query Category(
+                UUID.fromString(it.getString("id")),
+                UUID.fromString(it.getString("user_id")),
+                it.getString("name"),
+                it.getString("clockify_project_id"),
+                it.getBoolean("default")
+            )
+        }
     }
 
     @Throws(Exception::class)
