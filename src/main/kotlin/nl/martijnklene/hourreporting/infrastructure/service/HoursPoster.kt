@@ -21,7 +21,7 @@ class HoursPoster(
         }
 
         postedParams.hours!!.forEach {
-            val startTime = LocalDate.parse(it.key).atTime(8, 0).atZone(ZoneId.of("Europe/Amsterdam"))
+            val startTime = LocalDate.parse(it.key).atTime(8, 0).atZone(ZoneId.of("UTC"))
             val endTime = ZonedDateTime.from(startTime).plusHours(it.value["hours"]?.toLong() ?: error("No Hours posted"))
             val project = projectHttpRepository.getProjectFromTaskId(it.value["taskId"] ?: error("Task ID not present"))
             val timeEntry = PostTimeEntry(
