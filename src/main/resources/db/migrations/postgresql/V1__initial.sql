@@ -14,5 +14,12 @@ create table "category"
     "default" boolean
 );
 
+create table "ignored_category"
+(
+    "id" uuid not null,
+    "user_id" uuid not null,
+    "name" varchar not null
+)
+
 create unique index "category_id_uindex"
     on category (id);
