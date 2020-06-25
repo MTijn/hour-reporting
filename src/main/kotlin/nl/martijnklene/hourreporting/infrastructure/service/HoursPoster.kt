@@ -15,7 +15,7 @@ class HoursPoster(
     private val projectHttpRepository: ProjectHttpRepository,
     private val timeEntries: TimeEntries
 ) {
-    fun createTimeEntries(postedParams: FormEntity) {
+    fun createTimeEntries(postedParams: FormEntity, apiKey: String) {
         if (postedParams.hours.isNullOrEmpty()) {
             throw NoHoursPosted("Missing hours to be posted")
         }
@@ -33,7 +33,7 @@ class HoursPoster(
                 emptyList(),
                 it.value["taskId"] ?: error("Task ID not present")
             )
-            timeEntries.postTimeEntry(timeEntry)
+            timeEntries.postTimeEntry(timeEntry, apiKey)
         }
     }
 }

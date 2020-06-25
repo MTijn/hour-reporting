@@ -1,5 +1,6 @@
 package nl.martijnklene.hourreporting.infrastructure.http
 
+import nl.martijnklene.hourreporting.application.encryption.StringEncryption
 import nl.martijnklene.hourreporting.application.model.User
 import nl.martijnklene.hourreporting.application.repository.UserRepository
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.CategoriesProvider
@@ -20,7 +21,8 @@ import java.util.*
 class UserController(
     private val userRepository: UserRepository,
     private val userProvider: UserProvider,
-    private val categoriesProvider: CategoriesProvider
+    private val categoriesProvider: CategoriesProvider,
+    private val encryption: StringEncryption
 ) {
     @GetMapping("/user")
     fun viewUser(): Any {
@@ -45,7 +47,7 @@ class UserController(
             UUID.fromString(outlookUser.id),
             outlookUser.displayName,
             emptyList(),
-            user.apiKey
+            encryption.encryptText(user.apiKey)
         ))
         return RedirectView("/")
     }

@@ -1,6 +1,7 @@
 package nl.martijnklene.hourreporting.infrastructure.external.clockify
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import nl.martijnklene.hourreporting.application.encryption.StringEncryption
 import nl.martijnklene.hourreporting.infrastructure.external.clockify.dto.PostTimeEntry
 import nl.martijnklene.hourreporting.infrastructure.external.clockify.dto.TimeEntriesList
 import nl.martijnklene.hourreporting.infrastructure.external.clockify.dto.TimeEntry
@@ -15,19 +16,19 @@ import org.springframework.stereotype.Component
 
 @Component
 class TimeEntries(
-    @Value("\${clockify.api-key}") private val apiKey: String,
     @Value("\${clockify.workspace}") private val workSpace: String,
     @Value("\${clockify.user}") private val user: String,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val encryption: StringEncryption
 ) {
-    fun lastClockifyTimeEntry(): TimeEntry? {
+    fun lastClockifyTimeEntry(apiKey: String): TimeEntry? {
         val httpClient = HttpClients.createDefault()
         val request = HttpGet(String.format(
             "https://global.api.clockify.me/workspaces/%s/timeEntries/user/%s/full?page=0&limit=1",
             workSpace,
             user
         ))
-        request.addHeader("X-API-KEY", apiKey)
+        request.addHeader("X-API-KEY", encryption.decryptText(apiKey))
         val response = httpClient.execute(request)
         httpClient.close()
 
@@ -39,7 +40,7 @@ class TimeEntries(
         return entries.timeEntriesList.stream().findFirst().get();
     }
 
-    fun postTimeEntry(timeEntry: PostTimeEntry) {
+    fun postTimeEntry(timeEntry: PostTimeEntry, apiKey: String) {
         val httpClient = HttpClients.createDefault()
         val request = HttpPost(
             String.format(
@@ -49,7 +50,7 @@ class TimeEntries(
             )
         )
         request.entity = StringEntity(objectMapper.writeValueAsString(timeEntry))
-        request.addHeader("X-API-KEY", apiKey)
+        request.addHeader("X-API-KEY", encryption.decryptText(apiKey))
         request.addHeader("content-type", "application/json")
         val response = httpClient.execute(request)
         httpClient.close()

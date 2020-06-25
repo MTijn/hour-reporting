@@ -12,11 +12,11 @@ class DatesProvider(
     private val workingHoursRepository: WorkingHoursHttpRepository,
     private val timeEntries: TimeEntries
 ) {
-    fun suggestDaysForTheAuthenticatedUser(authentication: Authentication): List<LocalDate> {
+    fun suggestDaysForTheAuthenticatedUser(authentication: Authentication, apiKey: String): List<LocalDate> {
         val workingHours = workingHoursRepository.findWorkingHoursFromAuthentication(authentication)
         val workingDays = workingHours.daysOfWeek
 
-        val lastTimeEntry = timeEntries.lastClockifyTimeEntry()
+        val lastTimeEntry = timeEntries.lastClockifyTimeEntry(apiKey)
         val lastDate = lastTimeEntry!!.timeInterval.start.toLocalDate().plusDays(1)
         val today = LocalDate.now()
 

@@ -53,8 +53,8 @@ class HoursSuggestionCalculator(
         );
     }
 
-    fun suggestHoursForAnAuthenticatedUser(authentication: Authentication): List<SuggestedTimeEntry> {
-        val dates = datesSuggester.suggestDaysForTheAuthenticatedUser(authentication)
+    fun suggestHoursForAnAuthenticatedUser(authentication: Authentication, apiKey: String): List<SuggestedTimeEntry> {
+        val dates = datesSuggester.suggestDaysForTheAuthenticatedUser(authentication, apiKey)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
         dates.forEach { it -> suggestedEntries.add(this.suggestHoursForADay(authentication, it))}
         return suggestedEntries

@@ -25,23 +25,26 @@ class HomeController(
 ) {
     @GetMapping("/")
     fun displayArticle(model: ModelMap, authentication: Authentication): Any {
-        val user = userProvider.findOutlookUser(authentication)
-        if (userRepository.findOneUserById(UUID.fromString(user.id)) == null) {
-            return RedirectView("/user/welcome")
-        }
-        timeEntries.lastClockifyTimeEntry()?.let { model.addAttribute("lastTimeEntry", it) }
+        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser(authentication).id))
+            ?: return RedirectView("/user/welcome")
+
+        timeEntries.lastClockifyTimeEntry(user.clockifyApiKey)?.let { model.addAttribute("lastTimeEntry", it) }
         model.addAttribute(
             "suggestedEntries",
             suggestionCalculator.suggestHoursForAnAuthenticatedUser(
-                authentication
+                authentication,
+                user.clockifyApiKey
             )
         )
         return "index"
     }
 
     @PostMapping("/enter")
-    fun formPost(@ModelAttribute formEntity: FormEntity): RedirectView {
-        timePoster.createTimeEntries(formEntity)
+    fun formPost(@ModelAttribute formEntity: FormEntity, authentication: Authentication): RedirectView {
+        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser(authentication).id))
+            ?: return RedirectView("/user/welcome")
+
+        timePoster.createTimeEntries(formEntity, user.clockifyApiKey)
         return RedirectView("/")
     }
 }
