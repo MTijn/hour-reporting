@@ -19,7 +19,10 @@ create table "ignored_category"
     "id" uuid not null,
     "user_id" uuid not null,
     "name" varchar not null
-)
+);
 
 create unique index "category_id_uindex"
     on category (id);
+
+create unique index "ignored_category_id_uindex"
+    on ignored_category (id);
