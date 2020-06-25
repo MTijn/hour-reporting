@@ -2,6 +2,7 @@ package nl.martijnklene.hourreporting.infrastructure.repository
 
 import nl.martijnklene.hourreporting.application.model.User
 import nl.martijnklene.hourreporting.application.repository.CategoryRepository
+import nl.martijnklene.hourreporting.application.repository.IgnoredCategoryRepository
 import nl.martijnklene.hourreporting.application.repository.UserRepository
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -11,7 +12,8 @@ import java.util.*
 @Repository
 class UserPostgresRepository(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val ignoredCategoryRepository: IgnoredCategoryRepository
 ): UserRepository {
     @Throws(Exception::class)
     override fun save(user: User) {
@@ -20,7 +22,7 @@ class UserPostgresRepository(
             .addValue("name", user.name)
             .addValue("api_key", user.clockifyApiKey)
         jdbcTemplate.update(
-            "insert into \"user\" (\"id\", \"name\", \"clockify_api_key\") values (:id, :name, :api_key)",
+            "insert into \"user\" (id, name, clockify_api_key) values (:id, :name, :api_key)",
             parameterSource
         )
     }
@@ -33,9 +35,8 @@ class UserPostgresRepository(
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("name"),
-                categoryRepository.findCategoriesByUserId(
-                    UUID.fromString(resultSet.getString("id"))
-                ),
+                emptyList(),
+                emptyList(),
                 resultSet.getString("clockify_api_key")
             )
         }.firstOrNull()
