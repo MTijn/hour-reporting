@@ -47,6 +47,7 @@ class UserController(
             UUID.fromString(outlookUser.id),
             outlookUser.displayName,
             emptyList(),
+            emptyList(),
             encryption.encryptText(user.apiKey)
         ))
         return RedirectView("/")
