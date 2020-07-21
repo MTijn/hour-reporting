@@ -3,6 +3,7 @@ package nl.martijnklene.hourreporting.infrastructure.http
 import nl.martijnklene.hourreporting.application.encryption.StringEncryption
 import nl.martijnklene.hourreporting.application.model.User
 import nl.martijnklene.hourreporting.application.repository.UserRepository
+import nl.martijnklene.hourreporting.infrastructure.external.clockify.Projects
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.CategoriesProvider
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.UserProvider
 import nl.martijnklene.hourreporting.infrastructure.http.dto.CategoriesDto
@@ -22,10 +23,13 @@ class UserController(
     private val userRepository: UserRepository,
     private val userProvider: UserProvider,
     private val categoriesProvider: CategoriesProvider,
-    private val encryption: StringEncryption
+    private val encryption: StringEncryption,
+    private val clockifyProjects: Projects
 ) {
     @GetMapping("/user")
-    fun viewUser(): Any {
+    fun viewUser(authentication: Authentication, modelMap: ModelMap): Any {
+        modelMap.addAttribute("categories", categoriesProvider.findCategoriesForAuthenticatedUser(authentication))
+        modelMap.addAttribute("projects", clockifyProjects.projectsForUser())
         return "user"
     }
 
@@ -36,7 +40,6 @@ class UserController(
             RedirectView("/")
         }
         modelMap.addAttribute("userName", user.displayName)
-        modelMap.addAttribute("categories", categoriesProvider.findCategoriesForAuthenticatedUser(authentication))
         return "welcome"
     }
 
