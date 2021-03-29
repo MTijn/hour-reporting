@@ -11,7 +11,7 @@ class FreemarkerConfig : BeanPostProcessor {
     @Throws(BeansException::class)
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
         if (bean is FreeMarkerConfigurer) {
-            bean.configuration.objectWrapper = Java8ObjectWrapper(freemarker.template.Configuration.getVersion())
+            bean.configuration.objectWrapper = Java8ObjectWrapper(freemarker.template.Configuration.VERSION_2_3_31)
         }
         return bean
     }
