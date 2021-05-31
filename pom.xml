@@ -15,7 +15,7 @@
     <description>Hour reporting in Clockify</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>16</java.version>
         <azure.version>2.2.4</azure.version>
         <kotlin.version>1.5.10</kotlin.version>
     </properties>

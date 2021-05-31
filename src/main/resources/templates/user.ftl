@@ -38,7 +38,7 @@
                     <div class="form-group row">
                         <label id="default" class="col-sm-2 col-form-label">Default</label>
                         <div class="col-sm-9">
-                            <select id="default" name="default" class="form-control">
+                            <select id="default" name="categories[default]" class="form-control">
                                 <#list projects as project>
                                     <#list project.tasks as task>
                                         <option value="${task.id}">${project.name} - ${task.name}</option>
@@ -52,7 +52,7 @@
                         <div class="form-group row">
                             <label id="${category.id}" class="col-sm-2 col-form-label">${category.name}</label>
                             <div class="col-sm-9">
-                                <select id="${category.id}" name="${category.id}" class="form-control">
+                                <select id="${category.id}" name="categories[${category.id}]" class="form-control">
                                     <option>Do not map</option>
                                     <#list projects as project>
                                         <#list project.tasks as task>

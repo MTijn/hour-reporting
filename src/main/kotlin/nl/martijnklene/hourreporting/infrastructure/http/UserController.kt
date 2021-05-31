@@ -26,13 +26,6 @@ class UserController(
     private val encryption: StringEncryption,
     private val clockifyProjects: Projects
 ) {
-    @GetMapping("/user")
-    fun viewUser(authentication: Authentication, modelMap: ModelMap): Any {
-        modelMap.addAttribute("categories", categoriesProvider.findCategoriesForAuthenticatedUser(authentication))
-        modelMap.addAttribute("projects", clockifyProjects.projectsForUser())
-        return "user"
-    }
-
     @GetMapping("/user/welcome")
     fun welcomeUser(authentication: Authentication, modelMap: ModelMap): Any {
         val user = userProvider.findOutlookUser(authentication)
@@ -56,9 +49,26 @@ class UserController(
         return RedirectView("/")
     }
 
-    @PostMapping("/user/categories")
+    @GetMapping("/user/mapping")
+    fun viewUser(authentication: Authentication, modelMap: ModelMap): Any {
+        modelMap.addAttribute("categories", categoriesProvider.findCategoriesForAuthenticatedUser(authentication))
+        modelMap.addAttribute("projects", clockifyProjects.projectsForUser())
+        return "user"
+    }
+
+    @PostMapping("/user/mapping")
     fun storeCategories(@ModelAttribute categories: CategoriesDto): Any {
         return RedirectView("/user")
+    }
+
+    @GetMapping("/user/ignore-categories")
+    fun ignoreCategories(modelMap: ModelMap): Any {
+        return "ignore_categories"
+    }
+
+    @PostMapping("/user/ignore-categories")
+    fun postIgnoredCategories(@ModelAttribute categories: CategoriesDto): Any {
+        return RedirectView("/user/ignore-categories")
     }
 
     @GetMapping("/user/delete/{userId}")
