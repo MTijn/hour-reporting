@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-12">
                 <h2>Please define the categories that should be mapped</h2>
-                <form action="/user/categories" method="post">
+                <form action="/user/mapping" method="post">
                     <div class="form-group row">
                         <label id="default" class="col-sm-2 col-form-label">Default</label>
                         <div class="col-sm-9">

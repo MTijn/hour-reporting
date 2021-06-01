@@ -12,15 +12,14 @@ class CategoryPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTem
     @Throws(Exception::class)
     override fun save(category: Category) {
         val parameterSource = MapSqlParameterSource()
-            .addValue("id", category.id.toString())
-            .addValue("userId", category.userId.toString())
-            .addValue("name", category.name)
+            .addValue("userId", category.userId)
+            .addValue("outlookCategoryId", category.outlookTaskId)
             .addValue("clockifyProjectId", category.clockifyProjectId)
             .addValue("default", category.default)
 
         jdbcTemplate.update(
-            "insert into category (`id`, `user_id`, `name`, `clockify_project_id`, `default`) values " +
-                    "(:id, :userId, :name, :clockifyProjectId, :default)",
+            "replace into category (user_id, outlook_category_id, clockify_project_id, \"default\") values " +
+                    "(:userId, :outlookCategoryId, :clockifyProjectId, :default)",
             parameterSource
         )
     }
@@ -28,25 +27,51 @@ class CategoryPostgresRepository(private val jdbcTemplate: NamedParameterJdbcTem
     override fun findCategoriesByUserId(userId: UUID): List<Category> {
         val parameterSource = MapSqlParameterSource().addValue("userId", userId)
         return jdbcTemplate.query(
-            "select id, user_id, name, clockify_project_id, \"default\" from category where user_id = :userId",
+            "select user_id, name, clockify_project_id, \"default\" from category where user_id = :userId",
             parameterSource
         ) { it, _ ->
             return@query Category(
-                UUID.fromString(it.getString("id")),
                 UUID.fromString(it.getString("user_id")),
-                it.getString("name"),
+                UUID.fromString(it.getString("outlook_category_id")),
                 it.getString("clockify_project_id"),
                 it.getBoolean("default")
             )
         }
     }
 
-    @Throws(Exception::class)
-    override fun deleteCategoryById(id: UUID) {
+    override fun findCategoryByUserIdAndTask(userId: UUID, task: String): Category? {
         val parameterSource = MapSqlParameterSource()
-            .addValue("id", id.toString())
-        jdbcTemplate.update("delete from category where id = :id", parameterSource)
+            .addValue("userId", userId)
+            .addValue("name", task)
 
+        return jdbcTemplate.query(
+            "select user_id, name, clockify_project_id, \"default\" from category where user_id = :userId and name = :name",
+            parameterSource
+        ) { it, _ ->
+            return@query Category(
+                UUID.fromString(it.getString("user_id")),
+                UUID.fromString(it.getString("outlook_category_id")),
+                it.getString("clockify_project_id"),
+                it.getBoolean("default")
+            )
+        }.first()
+    }
+
+    override fun findDefaultCategoryForUser(userId: UUID): Category? {
+        val parameterSource = MapSqlParameterSource()
+            .addValue("userId", userId)
+
+        return jdbcTemplate.query(
+            "select user_id, name, clockify_project_id, \"default\" from category where user_id = :userId and name = :name and `default` = true",
+            parameterSource
+        ) { it, _ ->
+            return@query Category(
+                UUID.fromString(it.getString("user_id")),
+                UUID.fromString(it.getString("outlook_category_id")),
+                it.getString("clockify_project_id"),
+                it.getBoolean("default")
+            )
+        }.first()
     }
 
     @Throws(Exception::class)

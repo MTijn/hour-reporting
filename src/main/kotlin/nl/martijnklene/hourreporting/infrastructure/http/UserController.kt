@@ -2,12 +2,14 @@ package nl.martijnklene.hourreporting.infrastructure.http
 
 import nl.martijnklene.hourreporting.application.encryption.StringEncryption
 import nl.martijnklene.hourreporting.application.model.User
+import nl.martijnklene.hourreporting.application.repository.CategoryRepository
 import nl.martijnklene.hourreporting.application.repository.UserRepository
 import nl.martijnklene.hourreporting.infrastructure.external.clockify.Projects
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.CategoriesProvider
 import nl.martijnklene.hourreporting.infrastructure.external.outlook.UserProvider
 import nl.martijnklene.hourreporting.infrastructure.http.dto.CategoriesDto
 import nl.martijnklene.hourreporting.infrastructure.http.dto.UserDto
+import nl.martijnklene.hourreporting.service.CategoryMapperService
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -24,11 +26,13 @@ class UserController(
     private val userProvider: UserProvider,
     private val categoriesProvider: CategoriesProvider,
     private val encryption: StringEncryption,
-    private val clockifyProjects: Projects
+    private val clockifyProjects: Projects,
+    private val categoriesMapperService: CategoryMapperService,
+    private val categoryRepository: CategoryRepository
 ) {
     @GetMapping("/user/welcome")
     fun welcomeUser(authentication: Authentication, modelMap: ModelMap): Any {
-        val user = userProvider.findOutlookUser(authentication)
+        val user = userProvider.findOutlookUser()
         if (userRepository.findOneUserById(UUID.fromString(user.id)) != null) {
             RedirectView("/")
         }
@@ -38,7 +42,7 @@ class UserController(
 
     @PostMapping("/user")
     fun createUser(authentication: Authentication, @ModelAttribute user: UserDto): Any {
-        val outlookUser = userProvider.findOutlookUser(authentication)
+        val outlookUser = userProvider.findOutlookUser()
         userRepository.save(User(
             UUID.fromString(outlookUser.id),
             outlookUser.displayName,
@@ -58,7 +62,10 @@ class UserController(
 
     @PostMapping("/user/mapping")
     fun storeCategories(@ModelAttribute categories: CategoriesDto): Any {
-        return RedirectView("/user")
+        categoriesMapperService.translateDtoToCategory(categories).forEach {
+            categoryRepository.save(it)
+        }
+        return RedirectView("/user/mapping")
     }
 
     @GetMapping("/user/ignore-categories")

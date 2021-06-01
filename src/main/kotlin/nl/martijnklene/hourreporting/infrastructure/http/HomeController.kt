@@ -25,7 +25,7 @@ class HomeController(
 ) {
     @GetMapping("/")
     fun displayArticle(model: ModelMap, authentication: Authentication): Any {
-        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser(authentication).id))
+        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser().id))
             ?: return RedirectView("/user/welcome")
 
         timeEntries.lastClockifyTimeEntry(user.clockifyApiKey)?.let { model.addAttribute("lastTimeEntry", it) }
@@ -41,7 +41,7 @@ class HomeController(
 
     @PostMapping("/enter")
     fun formPost(@ModelAttribute formEntity: FormEntity, authentication: Authentication): RedirectView {
-        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser(authentication).id))
+        val user = userRepository.findOneUserById(UUID.fromString(userProvider.findOutlookUser().id))
             ?: return RedirectView("/user/welcome")
 
         timePoster.createTimeEntries(formEntity, user.clockifyApiKey)
