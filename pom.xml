@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0</version>
+        <version>2.5.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.martijnklene</groupId>
@@ -19,6 +19,16 @@
         <azure.version>2.2.4</azure.version>
         <kotlin.version>1.5.10</kotlin.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-core</artifactId>
+                <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Spring !-->
@@ -35,9 +45,8 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>2.4.2</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -56,10 +65,12 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -74,14 +85,14 @@
 
         <!-- Microsoft Dependencies !-->
         <dependency>
-            <groupId>com.microsoft.graph</groupId>
-            <artifactId>microsoft-graph</artifactId>
-            <version>2.8.1</version>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+            <version>3.5.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
         </dependency>
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>msal4j</artifactId>
-            <version>1.9.1</version>
+            <groupId>com.microsoft.graph</groupId>
+            <artifactId>microsoft-graph</artifactId>
+            <version>3.9.0</version>
         </dependency>
 
         <dependency>

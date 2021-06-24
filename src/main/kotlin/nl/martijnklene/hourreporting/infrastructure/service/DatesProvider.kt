@@ -5,7 +5,7 @@ import nl.martijnklene.hourreporting.infrastructure.repository.WorkingHoursHttpR
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.util.stream.*
+import java.util.stream.Collectors
 
 @Component
 class DatesProvider(
@@ -14,12 +14,12 @@ class DatesProvider(
 ) {
     fun suggestDaysForTheAuthenticatedUser(authentication: Authentication, apiKey: String): List<LocalDate> {
         val workingHours = workingHoursRepository.findWorkingHoursFromAuthentication(authentication)
-        val workingDays = workingHours.daysOfWeek
+        val workingDays = workingHours!!.daysOfWeek
 
         val lastTimeEntry = timeEntries.lastClockifyTimeEntry(apiKey)
         val lastDate = lastTimeEntry!!.timeInterval.start.toLocalDate().plusDays(1)
         val today = LocalDate.now()
 
-        return lastDate.datesUntil(today).filter { date -> workingDays.map { it.name }.contains(date.dayOfWeek.name)}.collect(Collectors.toList())
+        return lastDate.datesUntil(today).filter { date -> workingDays!!.map { it.name }.contains(date.dayOfWeek.name)}.collect(Collectors.toList())
     }
 }

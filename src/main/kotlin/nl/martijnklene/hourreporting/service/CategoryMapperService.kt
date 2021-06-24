@@ -27,7 +27,6 @@ class CategoryMapperService(
                 "default" -> categories.add(Category(
                     UUID.randomUUID(),
                     UUID.fromString(user.id),
-                    null,
                     it.value!!,
                     true
                 ))
@@ -36,7 +35,6 @@ class CategoryMapperService(
                         categories.add(Category(
                             UUID.randomUUID(),
                             UUID.fromString(user.id),
-                            UUID.fromString(it.key!!),
                             it.value!!,
                             false
                         ))

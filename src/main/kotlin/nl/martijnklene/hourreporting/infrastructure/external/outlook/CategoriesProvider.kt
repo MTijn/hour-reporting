@@ -8,12 +8,12 @@ import java.util.*
 @Component
 class CategoriesProvider(private val graphServiceClientProvider: GraphClientProvider) {
     fun findCategoriesForAuthenticatedUser(authentication: Authentication): List<Category> {
-        return graphServiceClientProvider.provideGraphClient(authentication)
+        return graphServiceClientProvider.provideGraphClient()
             .me()
             .outlook()
             .masterCategories()
             .buildRequest()
-            .get()
-            .currentPage.map { Category(UUID.fromString(it.id), it.displayName, it.color.name) }
+            .get()!!.
+            currentPage.map { Category(UUID.fromString(it.id), it.displayName!!, it.color!!.name)  }
     }
 }

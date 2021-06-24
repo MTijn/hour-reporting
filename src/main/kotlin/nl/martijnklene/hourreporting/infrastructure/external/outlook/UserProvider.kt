@@ -1,6 +1,6 @@
 package nl.martijnklene.hourreporting.infrastructure.external.outlook
 
-import com.microsoft.graph.models.extensions.User
+import com.microsoft.graph.models.User
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
