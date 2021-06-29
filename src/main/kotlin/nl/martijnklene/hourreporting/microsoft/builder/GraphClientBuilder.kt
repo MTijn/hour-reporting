@@ -5,8 +5,8 @@ import okhttp3.Request
 import org.springframework.stereotype.Component
 
 @Component
-class GraphClientBuilder {
+class GraphClientBuilder(private val provider: GraphAuthenticationProvider) {
     fun buildGraphClient(): GraphServiceClient<Request> {
-        return GraphServiceClient.builder().buildClient()
+        return GraphServiceClient.builder().authenticationProvider(provider).buildClient()
     }
 }
