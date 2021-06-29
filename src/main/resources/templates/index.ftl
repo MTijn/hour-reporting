@@ -30,7 +30,6 @@
             </nav>
         </header>
         <main role="main">
-            <#include "time_entry.ftl">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
