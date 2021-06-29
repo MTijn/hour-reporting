@@ -7,7 +7,9 @@ import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 
+@Component
 class ProjectsService(
     @Value("\${clockify.api-key}") private val apiKey: String,
     @Value("\${clockify.workspace}") private val workSpace: String,

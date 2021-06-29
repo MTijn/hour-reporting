@@ -1,5 +1,8 @@
 package nl.martijnklene.hourreporting.service
 
+import org.springframework.stereotype.Component
+
+@Component
 class IgnoredCategories {
     companion object {
         val categoriesToIgnore = listOf<String>(

@@ -51,7 +51,8 @@
                                         <td>
                                             <input
                                                     type="number"
-                                                    value="${suggestedEntry.duration.toHours()}"
+                                                    step="0.1"
+                                                    value="${suggestedEntry.duration.toHours() + "." + suggestedEntry.duration.toMinutes()}"
                                                     name="hours[${suggestedEntry.date}][hours]"
                                             >
                                             <input type="hidden" value="${suggestedEntry.taskId}" name="hours[${suggestedEntry.date}][taskId]">

@@ -3,10 +3,13 @@ package nl.martijnklene.hourreporting.service
 import nl.martijnklene.hourreporting.clockify.service.ProjectsService
 import nl.martijnklene.hourreporting.dto.SuggestedTimeEntry
 import nl.martijnklene.hourreporting.microsoft.service.CalendarEventsFetcher
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
+import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@Component
 class HoursSuggestionCalculator(
     private val projectsService: ProjectsService,
     private val calendarService: CalendarEventsFetcher,
@@ -14,10 +17,10 @@ class HoursSuggestionCalculator(
     private val ignoredCategories: IgnoredCategories,
     private val datesSuggesterService: DatesSuggesterService
 ) {
-    fun suggestHoursForADay(date: LocalDate): SuggestedTimeEntry {
+    fun suggestHoursForADay(date: LocalDate, client: OAuth2AuthorizedClient): SuggestedTimeEntry {
         var workingHours = Duration.parse("PT8H")
         var taskId = ""
-        for (event in calendarService.getEventsForADay(date)!!.currentPage) {
+        for (event in calendarService.getEventsForADay(date, client)!!.currentPage) {
             if (event.responseStatus!!.response!!.name != "ACCEPTED" && event.responseStatus!!.response!!.name != "ORGANIZER") {
                 continue
             }
@@ -48,10 +51,10 @@ class HoursSuggestionCalculator(
         );
     }
 
-    fun suggestHoursForAnAuthenticatedUser(apiKey: String): List<SuggestedTimeEntry> {
-        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(apiKey)
+    fun suggestHoursForAnAuthenticatedUser(apiKey: String, client: OAuth2AuthorizedClient): List<SuggestedTimeEntry> {
+        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(apiKey, client)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
-        dates.forEach { suggestedEntries.add(this.suggestHoursForADay(it))}
+        dates.forEach { suggestedEntries.add(this.suggestHoursForADay(it, client))}
         return suggestedEntries
     }
 }
