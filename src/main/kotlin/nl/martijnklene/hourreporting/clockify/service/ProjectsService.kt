@@ -39,4 +39,18 @@ class ProjectsService(
         );
         return clockifyProjects
     }
+
+    fun getProjectFromTaskId(taskId: String): Project? {
+        if (clockifyProjects.isEmpty()) {
+            projectsForUser()
+        }
+
+        clockifyProjects.forEach {
+            val task = it.tasks.find { task -> task.id == taskId }
+            if (task != null) {
+                return it
+            }
+        }
+        return null
+    }
 }
