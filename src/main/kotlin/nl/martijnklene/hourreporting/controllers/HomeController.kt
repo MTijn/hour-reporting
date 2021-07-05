@@ -49,7 +49,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        hoursPoster.createTimeEntries(formEntity, user.clockifyApiKey)
+        hoursPoster.createTimeEntries(formEntity, user.clockifyApiKey, client)
         return RedirectView("/")
     }
 }
