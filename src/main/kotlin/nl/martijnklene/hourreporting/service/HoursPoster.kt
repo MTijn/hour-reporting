@@ -21,7 +21,7 @@ class HoursPoster(
         }
 
         postedParams.hours!!.forEach {
-            val startTime = LocalDate.parse(it.key).atTime(8, 0).atZone(ZoneId.of("UTC"))
+            val startTime = LocalDate.parse(it.key).atTime(6, 0).atZone(ZoneId.of("UTC"))
             val hours = it.value["hours"]?.toLong()
             val duration = Duration.ofMinutes(hours!!)
             val endTime = ZonedDateTime.from(startTime).plus(duration ?: error("No Hours posted"))
