@@ -28,7 +28,8 @@ class HomeController(
     fun homeScreen(model: ModelMap, @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-        timeEntriesService.lastClockifyTimeEntry(user!!.clockifyApiKey)?.let { model.addAttribute("lastTimeEntry", it) }
+            ?: return RedirectView("/user/welcome")
+        timeEntriesService.lastClockifyTimeEntry(user.clockifyApiKey)?.let { model.addAttribute("lastTimeEntry", it) }
         model.addAttribute(
             "suggestedEntries",
             suggesterService.suggestHoursForAnAuthenticatedUser(
