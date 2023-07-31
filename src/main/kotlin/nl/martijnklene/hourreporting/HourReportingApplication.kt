@@ -9,5 +9,5 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 class HourReportingApplication
 
 fun main(args: Array<String>) {
-	runApplication<HourReportingApplication>(*args)
+    runApplication<HourReportingApplication>(*args)
 }

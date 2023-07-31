@@ -1,6 +1,5 @@
 package nl.martijnklene.hourreporting.service
 
-import nl.martijnklene.hourreporting.clockify.service.ProjectsService
 import nl.martijnklene.hourreporting.dto.SuggestedTimeEntry
 import nl.martijnklene.hourreporting.microsoft.service.CalendarEventsFetcher
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
@@ -11,7 +10,6 @@ import java.time.LocalDateTime
 
 @Component
 class HoursSuggestionCalculator(
-    private val projectsService: ProjectsService,
     private val calendarService: CalendarEventsFetcher,
     private val categoryMapper: CategoryMapper,
     private val ignoredCategories: IgnoredCategories,
@@ -42,11 +40,10 @@ class HoursSuggestionCalculator(
             ))
         }
 
-        val identifiedTask = projectsService.projectsForUser().flatMap { it.tasks }.first { task -> task.id == taskId}
         return SuggestedTimeEntry(
             workingHours,
             taskId,
-            identifiedTask.name,
+            "test",
             date
         );
     }

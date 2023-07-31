@@ -34,12 +34,12 @@
         <div class="row">
             <div class="col-12">
                 <h2>Welcome ${userName}</h2>
-                <p>In order for this application to work you will need to provide an API key from Clockify</p>
+                <p>In order for this application to work you will need to provide an API key from Jira</p>
                 <p>Please create one and copy it into the input field</p>
                 <p>The API key itself is stored in the app's database in an encrypted way</p>
                 <form action="/user" method="post">
                     <div class="form-group">
-                        <label for="apiKey">Clockify API key</label>
+                        <label for="apiKey">Jira API key</label>
                         <input type="password" class="form-control" id="apiKey" name="apiKey">
                     </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
