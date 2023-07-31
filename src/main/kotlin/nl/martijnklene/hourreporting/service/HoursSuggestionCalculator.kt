@@ -27,12 +27,12 @@ class HoursSuggestionCalculator(
             val category = event.categories!!.firstOrNull()
 
             if (event.isAllDay == true) {
-                taskId = categoryMapper.mapCategoryToClockifyTaskId(category)
+                taskId = categoryMapper.mapCategoryToJiraTaskId(category)
                 workingHours = Duration.parse("PT8H")
                 break
             }
 
-            taskId = categoryMapper.mapCategoryToClockifyTaskId(category)
+            taskId = categoryMapper.mapCategoryToJiraTaskId(category)
             if (ignoredCategories.shouldCategoryBeIgnored(category)) {
                 continue
             }
