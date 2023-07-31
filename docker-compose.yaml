@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  db:
+    image: registry.k8s.ispworks.nl/library/mysql-jenkins-multi-schema:5.7
+    environment:
+      MYSQL_SCHEMAS: hour_reporting
+    ports:
+      - "3310:3306"

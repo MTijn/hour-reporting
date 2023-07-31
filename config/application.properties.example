@@ -1,9 +1,8 @@
-spring.cloud.azure.active-directory.enabled=true
 # Specifies your App Registration's Application ID:
-spring.cloud.azure.active-directory.credential.client-id=<your-client-ID>
+azure.activedirectory.client-id=11111111-1111-1111-1111-1111111111111111
 # Specifies your App Registration's secret key:
-spring.cloud.azure.active-directory.credential.client-secret=<your-client-secret>
-spring.cloud.azure.active-directory.authorization-clients.graph.scopes=openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read
+azure.activedirectory.client-secret=AbCdEfGhIjKlMnOpQrStUvWxYz==
+azure.activedirectory.authorization-clients.graph.scopes=openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read
 
 azure.activedirectory.allow-telemetry=false
 
