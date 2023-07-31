@@ -43,7 +43,6 @@ class StringEncryption(
 
         val keySpecPKCS8 = PKCS8EncodedKeySpec(bytes)
         return kf.generatePrivate(keySpecPKCS8)
-
     }
 
     private fun createPublicKeyFromString(): RSAPublicKey {

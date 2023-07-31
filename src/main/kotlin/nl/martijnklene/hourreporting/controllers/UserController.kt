@@ -32,23 +32,27 @@ class UserController(
     }
 
     @PostMapping("/user")
-    fun createUser(@ModelAttribute user: UserDto): Any {
+    fun createUser(
+        @ModelAttribute user: UserDto
+    ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
 
-        userRepository.save(User(
-            UUID.fromString(authentication.principal.attributes["oid"].toString()),
-            authentication.name,
-            emptyList(),
-            emptyList(),
-            encryption.encryptText(user.apiKey)
-        )
+        userRepository.save(
+            User(
+                UUID.fromString(authentication.principal.attributes["oid"].toString()),
+                authentication.name,
+                emptyList(),
+                emptyList(),
+                encryption.encryptText(user.apiKey)
+            )
         )
         return RedirectView("/")
     }
 
-
     @GetMapping("/user/delete/{userId}")
-    fun deleteUser(@PathVariable userId: String): RedirectView {
+    fun deleteUser(
+        @PathVariable userId: String
+    ): RedirectView {
         userRepository.deleteUserById(UUID.fromString(userId))
         return RedirectView("/logout")
     }

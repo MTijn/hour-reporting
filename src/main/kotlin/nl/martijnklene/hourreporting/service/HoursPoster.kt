@@ -33,7 +33,6 @@ class HoursPoster(
                         LocalDate.parse(it.key)
                     )
                 )
-
             }
         }
     }

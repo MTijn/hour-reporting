@@ -4,7 +4,6 @@ import nl.martijnklene.hourreporting.controllers.dto.FormEntity
 import nl.martijnklene.hourreporting.repository.UserRepository
 import nl.martijnklene.hourreporting.service.HoursPoster
 import nl.martijnklene.hourreporting.service.HoursSuggestionCalculator
-import nl.martijnklene.hourreporting.tempo.service.WorkLogFetcher
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.view.RedirectView
 import java.time.*
-import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 @Controller
@@ -26,7 +24,10 @@ class HomeController(
     private val hoursSuggestionCalculator: HoursSuggestionCalculator
 ) {
     @GetMapping("/")
-    fun homeScreen(model: ModelMap, @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient): Any {
+    fun homeScreen(
+        model: ModelMap,
+        @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient
+    ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")

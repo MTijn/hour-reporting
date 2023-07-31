@@ -4,7 +4,6 @@ import nl.martijnklene.hourreporting.microsoft.service.WorkingHoursFetcher
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.time.ZonedDateTime
 import java.time.temporal.TemporalAdjusters
 import java.util.stream.Collectors
 
