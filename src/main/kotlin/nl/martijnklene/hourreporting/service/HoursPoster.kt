@@ -1,36 +1,40 @@
 package nl.martijnklene.hourreporting.service
 
 import nl.martijnklene.hourreporting.controllers.dto.FormEntity
-import nl.martijnklene.hourreporting.microsoft.service.WorkingHoursFetcher
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
+import nl.martijnklene.hourreporting.tempo.dto.WorkLog
+import nl.martijnklene.hourreporting.tempo.service.WorkLogPoster
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @Component
 class HoursPoster(
-    private val workingHoursFetcher: WorkingHoursFetcher
+    private val workLogPoster: WorkLogPoster
 ) {
-    fun createTimeEntries(postedParams: FormEntity, apiKey: String, client: OAuth2AuthorizedClient) {
+    fun createTimeEntries(postedParams: FormEntity, apiKey: String) {
         if (postedParams.hours.isNullOrEmpty()) {
             throw RuntimeException("Missing hours to be posted")
         }
 
-        val workingHours = workingHoursFetcher.findWorkingHoursFromAuthenticatedUser(client)
         postedParams.hours!!.forEach {
-            var startTime = LocalDate.parse(it.key).atTime(6, 0).atZone(ZoneId.of("UTC"))
-            if (workingHours != null) {
-                startTime = LocalDate.parse(it.key).atTime(
-                    workingHours.startTime!!.hour,
-                    workingHours.startTime!!.minute
-                ).atZone(ZoneId.of("Europe/Amsterdam")).withZoneSameInstant(ZoneId.of("UTC"))
-            }
+            val postedDescriptions = it.value["projectDescription"]?.split(",").orEmpty()
+            val postedTaskIds = it.value["taskId"]?.split(",").orEmpty()
 
-            val hours = it.value["hours"]?.toLong()
-            val duration = Duration.ofMinutes(hours!!)
-            val endTime = ZonedDateTime.from(startTime).plus(duration ?: error("No Hours posted"))
+            it.value["hours"]?.split(",").orEmpty().forEach { postedHour ->
+                val duration = Duration.ofMinutes(postedHour.toLong())
+
+                workLogPoster.postWorkLogItem(
+                    apiKey,
+                    WorkLog(
+                        duration.toSeconds().toInt(),
+                        postedDescriptions[postedHour.lastIndex],
+                        postedTaskIds[postedHour.lastIndex],
+                        "martijnk",
+                        LocalDate.parse(it.key)
+                    )
+                )
+
+            }
         }
     }
 }

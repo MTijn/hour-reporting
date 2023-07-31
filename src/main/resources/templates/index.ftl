@@ -30,7 +30,6 @@
             </nav>
         </header>
         <main role="main">
-            <#include "time_entry.ftl">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -56,6 +55,7 @@
                                                     name="hours[${suggestedEntry.date}][hours]"
                                             >
                                             <input type="hidden" value="${suggestedEntry.taskId}" name="hours[${suggestedEntry.date}][taskId]">
+                                            <input type="hidden" value="${suggestedEntry.projectDescription}" name="hours[${suggestedEntry.date}][projectDescription]">
                                         </td>
                                     </tr>
                                 </#list>

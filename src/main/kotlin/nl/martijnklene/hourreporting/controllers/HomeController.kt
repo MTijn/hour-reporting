@@ -3,6 +3,7 @@ package nl.martijnklene.hourreporting.controllers
 import nl.martijnklene.hourreporting.controllers.dto.FormEntity
 import nl.martijnklene.hourreporting.repository.UserRepository
 import nl.martijnklene.hourreporting.service.HoursPoster
+import nl.martijnklene.hourreporting.service.HoursSuggestionCalculator
 import nl.martijnklene.hourreporting.tempo.service.WorkLogFetcher
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
@@ -22,7 +23,7 @@ import java.util.*
 class HomeController(
     private val userRepository: UserRepository,
     private val hoursPoster: HoursPoster,
-    private val workLogFetcher: WorkLogFetcher
+    private val hoursSuggestionCalculator: HoursSuggestionCalculator
 ) {
     @GetMapping("/")
     fun homeScreen(model: ModelMap, @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient): Any {
@@ -30,10 +31,12 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        val workLogs = workLogFetcher.fetchWorkLogsBetweenDates(
-            ZonedDateTime.now().with(TemporalAdjusters.firstDayOfMonth()).minusMonths(1),
-            ZonedDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).minusMonths(1),
-            user.clockifyApiKey
+        model.addAttribute(
+            "suggestedEntries",
+            hoursSuggestionCalculator.suggestHoursForAnAuthenticatedUser(
+                user.clockifyApiKey,
+                client
+            )
         )
         return "index"
     }
@@ -48,7 +51,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        hoursPoster.createTimeEntries(formEntity, user.clockifyApiKey, client)
+        hoursPoster.createTimeEntries(formEntity, user.clockifyApiKey)
         return RedirectView("/")
     }
 }

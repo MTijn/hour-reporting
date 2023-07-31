@@ -1,7 +1,6 @@
 package nl.martijnklene.hourreporting.tempo.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.tempo.dto.WorkLogRequest
 import nl.martijnklene.hourreporting.tempo.model.WorkLog
@@ -11,7 +10,7 @@ import org.apache.hc.core5.http.ContentType
 import org.apache.hc.core5.http.HttpHeaders
 import org.apache.hc.core5.http.io.entity.StringEntity
 import org.springframework.stereotype.Component
-import java.time.ZonedDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Component
@@ -19,7 +18,7 @@ class WorkLogFetcher(
     private val objectMapper: ObjectMapper,
     private val encryption: StringEncryption
 ) {
-    fun fetchWorkLogsBetweenDates(from: ZonedDateTime, to: ZonedDateTime, token: String): Collection<WorkLog> {
+    fun fetchWorkLogsBetweenDates(from: LocalDate, to: LocalDate, token: String): Collection<WorkLog> {
         val httpClient = HttpClients.createDefault()
         val request = HttpPost("https://jira.voiceworks.com/rest/tempo-timesheets/4/worklogs/search")
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer ${encryption.decryptText(token)}")
