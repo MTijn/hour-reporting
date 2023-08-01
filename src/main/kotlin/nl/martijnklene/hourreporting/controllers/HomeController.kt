@@ -34,7 +34,7 @@ class HomeController(
         model.addAttribute(
             "suggestedEntries",
             hoursSuggestionCalculator.suggestHoursForAnAuthenticatedUser(
-                user.apiKey,
+                user,
                 client
             )
         )
@@ -51,7 +51,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        hoursPoster.createTimeEntries(formEntity, user.apiKey)
+        hoursPoster.createTimeEntries(formEntity, user)
         return RedirectView("/")
     }
 }

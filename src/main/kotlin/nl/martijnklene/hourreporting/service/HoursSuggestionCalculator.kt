@@ -2,6 +2,7 @@ package nl.martijnklene.hourreporting.service
 
 import nl.martijnklene.hourreporting.dto.SuggestedTimeEntry
 import nl.martijnklene.hourreporting.microsoft.service.CalendarEventsFetcher
+import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.service.WorkLogFetcher
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.stereotype.Component
@@ -17,10 +18,14 @@ class HoursSuggestionCalculator(
     private val datesSuggesterService: DatesSuggesterService,
     private val workLogFetcher: WorkLogFetcher
 ) {
-    fun suggestHoursForADay(date: LocalDate, client: OAuth2AuthorizedClient, apiKey: String): Collection<SuggestedTimeEntry> {
+    fun suggestHoursForADay(
+        date: LocalDate,
+        client: OAuth2AuthorizedClient,
+        user: User
+    ): Collection<SuggestedTimeEntry> {
         var durationToEnterIntoTempo = Duration.parse("PT8H")
         val suggestedTimeEntries = mutableListOf<SuggestedTimeEntry>()
-        workLogFetcher.fetchWorkLogsBetweenDates(date, date, apiKey).forEach {
+        workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).forEach {
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.billableSeconds.toLong()))
         }
         for (event in calendarService.getEventsForADay(date, client)!!.currentPage) {
@@ -82,10 +87,13 @@ class HoursSuggestionCalculator(
         return suggestedTimeEntries
     }
 
-    fun suggestHoursForAnAuthenticatedUser(apiKey: String, client: OAuth2AuthorizedClient): List<SuggestedTimeEntry> {
-        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(apiKey, client)
+    fun suggestHoursForAnAuthenticatedUser(user: User, client: OAuth2AuthorizedClient): List<SuggestedTimeEntry> {
+        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(user.apiKey, client)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
-        dates.forEach { this.suggestHoursForADay(it, client, apiKey).forEach { suggestedEntries.add(it) } }
+        dates.forEach {
+            this.suggestHoursForADay(it, client, user)
+                .forEach { suggestedTimeEntry -> suggestedEntries.add(suggestedTimeEntry) }
+        }
         return suggestedEntries
     }
 }

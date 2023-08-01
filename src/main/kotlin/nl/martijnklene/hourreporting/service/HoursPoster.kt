@@ -1,6 +1,7 @@
 package nl.martijnklene.hourreporting.service
 
 import nl.martijnklene.hourreporting.controllers.dto.FormEntity
+import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLog
 import nl.martijnklene.hourreporting.tempo.service.WorkLogPoster
 import org.springframework.stereotype.Component
@@ -11,7 +12,7 @@ import java.time.LocalDate
 class HoursPoster(
     private val workLogPoster: WorkLogPoster
 ) {
-    fun createTimeEntries(postedParams: FormEntity, apiKey: String) {
+    fun createTimeEntries(postedParams: FormEntity, user: User) {
         if (postedParams.hours.isNullOrEmpty()) {
             throw RuntimeException("Missing hours to be posted")
         }
@@ -24,12 +25,12 @@ class HoursPoster(
                 val duration = Duration.ofMinutes(postedHour.toLong())
 
                 workLogPoster.postWorkLogItem(
-                    apiKey,
+                    user.apiKey,
                     WorkLog(
                         timeSpentSeconds = duration.toSeconds().toInt(),
                         comment = postedDescriptions[index],
                         originTaskId = postedTaskIds[index],
-                        worker = "martijnk",
+                        worker = user.jiraUserName,
                         started = LocalDate.parse(it.key)
                     )
                 )

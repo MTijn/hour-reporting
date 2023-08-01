@@ -2,6 +2,7 @@ package nl.martijnklene.hourreporting.tempo.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import nl.martijnklene.hourreporting.encryption.StringEncryption
+import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLogRequest
 import nl.martijnklene.hourreporting.tempo.model.WorkLog
 import org.apache.hc.client5.http.classic.methods.HttpPost
@@ -18,15 +19,15 @@ class WorkLogFetcher(
     private val objectMapper: ObjectMapper,
     private val encryption: StringEncryption
 ) {
-    fun fetchWorkLogsBetweenDates(from: LocalDate, to: LocalDate, token: String): Collection<WorkLog> {
+    fun fetchWorkLogsBetweenDates(from: LocalDate, to: LocalDate, user: User): Collection<WorkLog> {
         val httpClient = HttpClients.createDefault()
         val request = HttpPost("https://jira.voiceworks.com/rest/tempo-timesheets/4/worklogs/search")
-        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer ${encryption.decryptText(token)}")
+        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer ${encryption.decryptText(user.apiKey)}")
         val requestJson = objectMapper.writeValueAsString(
             WorkLogRequest(
                 from.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 to.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                listOf("martijnk")
+                listOf(user.jiraUserName)
             )
         )
         request.entity = StringEntity(
