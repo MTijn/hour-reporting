@@ -16,9 +16,10 @@ class UserRepository(
             .addValue("id", user.id.toString())
             .addValue("name", user.name)
             .addValue("api_key", user.apiKey)
+            .addValue("jira_user_name", user.jiraUserName)
 
         jdbcTemplate.update(
-            "insert into `user` (id, name, jira_api_key) values (:id, :name, :api_key)",
+            "insert into `user` (id, name, jira_api_key, jira_user_name) values (:id, :name, :api_key, :jira_user_name)",
             parameterSource
         )
     }
@@ -26,7 +27,7 @@ class UserRepository(
     @Throws(Exception::class)
     fun findUserById(id: UUID): User? {
         val parameterSource = MapSqlParameterSource().addValue("id", id.toString())
-        return jdbcTemplate.query("select id, name, jira_api_key from `user` where id = :id", parameterSource) {
+        return jdbcTemplate.query("select id, name, jira_api_key, jira_user_name from `user` where id = :id", parameterSource) {
                 resultSet, _ ->
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
