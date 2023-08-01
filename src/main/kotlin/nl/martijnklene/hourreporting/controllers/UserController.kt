@@ -1,6 +1,6 @@
 package nl.martijnklene.hourreporting.controllers
 
-import nl.martijnklene.hourreporting.controllers.dto.UserDto
+import nl.martijnklene.hourreporting.controllers.response.UserDto
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.repository.UserRepository

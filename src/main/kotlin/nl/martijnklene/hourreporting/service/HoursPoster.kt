@@ -1,6 +1,6 @@
 package nl.martijnklene.hourreporting.service
 
-import nl.martijnklene.hourreporting.controllers.dto.FormEntity
+import nl.martijnklene.hourreporting.controllers.response.PostedHours
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLog
 import nl.martijnklene.hourreporting.tempo.service.WorkLogPoster
@@ -12,7 +12,7 @@ import java.time.LocalDate
 class HoursPoster(
     private val workLogPoster: WorkLogPoster
 ) {
-    fun createTimeEntries(postedParams: FormEntity, user: User) {
+    fun createTimeEntries(postedParams: PostedHours, user: User) {
         if (postedParams.hours.isNullOrEmpty()) {
             throw RuntimeException("Missing hours to be posted")
         }

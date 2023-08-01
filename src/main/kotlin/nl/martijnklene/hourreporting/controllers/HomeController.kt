@@ -1,6 +1,6 @@
 package nl.martijnklene.hourreporting.controllers
 
-import nl.martijnklene.hourreporting.controllers.dto.FormEntity
+import nl.martijnklene.hourreporting.controllers.response.PostedHours
 import nl.martijnklene.hourreporting.repository.UserRepository
 import nl.martijnklene.hourreporting.service.HoursPoster
 import nl.martijnklene.hourreporting.service.HoursSuggestionCalculator
@@ -43,7 +43,7 @@ class HomeController(
 
     @PostMapping("/enter")
     fun formPost(
-        @ModelAttribute formEntity: FormEntity,
+        @ModelAttribute postedHours: PostedHours,
         @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient
     ): RedirectView {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
@@ -51,7 +51,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        hoursPoster.createTimeEntries(formEntity, user)
+        hoursPoster.createTimeEntries(postedHours, user)
         return RedirectView("/")
     }
 }
