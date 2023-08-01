@@ -15,7 +15,7 @@ class UserRepository(
         val parameterSource = MapSqlParameterSource()
             .addValue("id", user.id.toString())
             .addValue("name", user.name)
-            .addValue("api_key", user.clockifyApiKey)
+            .addValue("api_key", user.apiKey)
 
         jdbcTemplate.update(
             "insert into `user` (id, name, jira_api_key) values (:id, :name, :api_key)",
@@ -33,7 +33,8 @@ class UserRepository(
                 resultSet.getString("name"),
                 emptyList(),
                 emptyList(),
-                resultSet.getString("jira_api_key")
+                resultSet.getString("jira_api_key"),
+                resultSet.getString("jira_user_name")
             )
         }.firstOrNull()
     }

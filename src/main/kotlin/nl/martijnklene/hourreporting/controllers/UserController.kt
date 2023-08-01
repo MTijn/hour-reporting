@@ -43,7 +43,8 @@ class UserController(
                 authentication.name,
                 emptyList(),
                 emptyList(),
-                encryption.encryptText(user.apiKey)
+                encryption.encryptText(user.apiKey),
+                user.jiraUserName
             )
         )
         return RedirectView("/")

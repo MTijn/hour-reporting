@@ -33,10 +33,9 @@ class HoursSuggestionCalculator(
             val category = event.categories!!.firstOrNull()
 
             if (event.isAllDay == true) {
-                durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.parse("PT8H"))
                 suggestedTimeEntries.add(
                     SuggestedTimeEntry(
-                        Duration.parse("PT8H"),
+                        durationToEnterIntoTempo,
                         categoryMapper.mapCategoryToJiraTaskId(category),
                         event.subject.toString(),
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()

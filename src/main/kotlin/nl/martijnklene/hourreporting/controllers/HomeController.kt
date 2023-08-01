@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.view.RedirectView
-import java.time.*
 import java.util.*
 
 @Controller
@@ -35,7 +34,7 @@ class HomeController(
         model.addAttribute(
             "suggestedEntries",
             hoursSuggestionCalculator.suggestHoursForAnAuthenticatedUser(
-                user.clockifyApiKey,
+                user.apiKey,
                 client
             )
         )
@@ -52,7 +51,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
-        hoursPoster.createTimeEntries(formEntity, user.clockifyApiKey)
+        hoursPoster.createTimeEntries(formEntity, user.apiKey)
         return RedirectView("/")
     }
 }

@@ -42,6 +42,10 @@
                         <label for="apiKey">Jira API key</label>
                         <input type="password" class="form-control" id="apiKey" name="apiKey">
                     </div>
+                    <div class="form-group">
+                        <label for="jira_user_name">Jira user name</label>
+                        <input type="text" class="form-control" id="jira_user_name" name="jiraUserName">
+                    </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <input type="submit" value="Send">
                 </form>

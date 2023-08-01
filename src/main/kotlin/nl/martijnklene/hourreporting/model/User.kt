@@ -7,5 +7,6 @@ data class User(
     val name: String,
     val categories: List<Category>,
     val ignoredCategories: List<IgnoredCategory>,
-    val clockifyApiKey: String
+    val apiKey: String,
+    val jiraUserName: String
 )
