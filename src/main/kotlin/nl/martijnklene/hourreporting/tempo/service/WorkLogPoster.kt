@@ -24,7 +24,7 @@ class WorkLogPoster(
             requestJson,
             ContentType.APPLICATION_JSON,
         )
-        val response = httpClient.execute(request)
+        httpClient.execute(request)
         httpClient.close()
     }
 }

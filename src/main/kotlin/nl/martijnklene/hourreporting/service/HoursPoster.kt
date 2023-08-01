@@ -20,17 +20,17 @@ class HoursPoster(
             val postedDescriptions = it.value["projectDescription"]?.split(",").orEmpty()
             val postedTaskIds = it.value["taskId"]?.split(",").orEmpty()
 
-            it.value["hours"]?.split(",").orEmpty().forEach { postedHour ->
+            it.value["hours"]?.split(",").orEmpty().forEachIndexed { index, postedHour ->
                 val duration = Duration.ofMinutes(postedHour.toLong())
 
                 workLogPoster.postWorkLogItem(
                     apiKey,
                     WorkLog(
-                        duration.toSeconds().toInt(),
-                        postedDescriptions[postedHour.lastIndex],
-                        postedTaskIds[postedHour.lastIndex],
-                        "martijnk",
-                        LocalDate.parse(it.key)
+                        timeSpentSeconds = duration.toSeconds().toInt(),
+                        comment = postedDescriptions[index],
+                        originTaskId = postedTaskIds[index],
+                        worker = "martijnk",
+                        started = LocalDate.parse(it.key)
                     )
                 )
             }
