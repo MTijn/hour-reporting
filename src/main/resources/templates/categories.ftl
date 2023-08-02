@@ -3,23 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Hour reporting | User configuration</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous"
-    >
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"
-    ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"
-    ></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
@@ -36,21 +24,34 @@
                 <h2>Please define the categories that should be mapped to Jira stories</h2>
                 <form action="/categories" method="post">
                     <#list categories as category>
-                        <div class="row mb-3">
-                            <label for="category_${category.id}" class="col-sm-2 col-form-label">${category.displayName}</label>
-                            <div class="col-sm-10">
+                    <div class="row mb-3">
+                        <div class="input-group mb-3">
+                            <div class="input-group">
+                                <label for="category_${category.id}"
+                                       class="col-sm-2 col-form-label">${category.displayName}</label>
+                                <div class="input-group-text">
+                                    <input
+                                        class="form-check-input mt-0"
+                                        type="radio"
+                                        aria-label="Fallback category"
+                                        value="${category.id}"
+                                        id="default"
+                                        name="default"
+                                        <#if category.isDefault()>checked="checked"</#if>
+                                    >
+                                </div>
                                 <input
                                     type="text"
                                     class="form-control"
                                     id="category_${category.id}"
                                     name="categories[${category.id}]"
+                                    value="${category.jiraTicketId! ''}"
                                 >
-                                <input class="form-check-input" type="radio" value="${category.id}" id="default" name="default">
                             </div>
                         </div>
-                    </#list>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                    <input type="submit" value="Send">
+                        </#list>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                        <input type="submit" value="Send">
                 </form>
             </div>
         </div>

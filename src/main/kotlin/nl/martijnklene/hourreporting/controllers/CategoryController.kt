@@ -40,6 +40,19 @@ class CategoryController(
 
     @PostMapping("/categories")
     fun changeMapping(postedForm: PostedCategoryMapping): String {
+        val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
+        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            ?: return "redirect:/"
+
+        postedForm.categories?.filter { it.value.isNotEmpty() }?.forEach {
+            categoryRepository.save(
+                nl.martijnklene.hourreporting.model.Category(
+                user.id,
+                UUID.fromString(it.key),
+                it.value,
+                postedForm.default == it.key
+            ))
+        }
         return "redirect:categories"
     }
 

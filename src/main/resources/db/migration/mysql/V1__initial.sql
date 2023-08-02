@@ -11,7 +11,7 @@ create table `category`
     `outlook_category_id` char(36),
     `jira_project_id` varchar(36) not null,
     `default` bool,
-    constraint category_udx unique (user_id, outlook_category_id, jira_project_id)
+    constraint category_udx unique (user_id, outlook_category_id)
 );
 
 create table `ignored_category`

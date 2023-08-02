@@ -41,7 +41,7 @@ class HoursSuggestionCalculator(
                 suggestedTimeEntries.add(
                     SuggestedTimeEntry(
                         durationToEnterIntoTempo,
-                        categoryMapper.mapCategoryToJiraTaskId(category),
+                        categoryMapper.mapCategoryToJiraTaskId(category, user),
                         event.subject.toString(),
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
@@ -49,7 +49,7 @@ class HoursSuggestionCalculator(
                 break
             }
 
-            val taskId = categoryMapper.mapCategoryToJiraTaskId(category)
+            val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user)
             if (ignoredCategories.shouldCategoryBeIgnored(category) || event.subject == "Focus time") {
                 continue
             }
@@ -78,7 +78,7 @@ class HoursSuggestionCalculator(
         suggestedTimeEntries.add(
             SuggestedTimeEntry(
                 durationToEnterIntoTempo,
-                categoryMapper.mapCategoryToJiraTaskId(""),
+                categoryMapper.mapCategoryToJiraTaskId("", user),
                 "Meeting",
                 date
             )
