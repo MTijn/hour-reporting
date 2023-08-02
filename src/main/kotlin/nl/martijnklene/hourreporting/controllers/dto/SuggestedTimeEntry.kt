@@ -1,4 +1,4 @@
-package nl.martijnklene.hourreporting.dto
+package nl.martijnklene.hourreporting.controllers.dto
 
 import java.time.Duration
 import java.time.LocalDate

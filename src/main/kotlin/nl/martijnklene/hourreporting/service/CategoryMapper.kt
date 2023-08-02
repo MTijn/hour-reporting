@@ -11,6 +11,6 @@ class CategoryMapper(
     fun mapCategoryToJiraTaskId(task: String?, user: User): String {
         val categories = categoryRepository.findConfiguredCategoriesForUser(user)
         return categories.firstOrNull { it.outlookTaskId.toString() == task }?.jiraProjectId
-            ?: categories.firstOrNull { it.default }?.jiraProjectId!!
+            ?: categories.firstOrNull { it.default }?.jiraProjectId.orEmpty()
     }
 }

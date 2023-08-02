@@ -28,6 +28,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Description</th>
+                            <th>Jira task ID</th>
                             <th>Suggested Minutes</th>
                         </tr>
                         </thead>
@@ -36,6 +37,7 @@
                             <tr>
                                 <td>${suggestedEntry.date.format('MEDIUM_DATE')}</td>
                                 <td>${suggestedEntry.projectDescription}</td>
+                                <td>${suggestedEntry.taskId}</td>
                                 <td>
                                     <input
                                         type="number"

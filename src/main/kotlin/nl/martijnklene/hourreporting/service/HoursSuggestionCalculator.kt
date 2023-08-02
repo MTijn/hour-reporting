@@ -1,6 +1,6 @@
 package nl.martijnklene.hourreporting.service
 
-import nl.martijnklene.hourreporting.dto.SuggestedTimeEntry
+import nl.martijnklene.hourreporting.controllers.dto.SuggestedTimeEntry
 import nl.martijnklene.hourreporting.microsoft.service.CalendarEventsFetcher
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.service.WorkLogFetcher
@@ -50,7 +50,7 @@ class HoursSuggestionCalculator(
             }
 
             val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user)
-            if (ignoredCategories.shouldCategoryBeIgnored(category) || event.subject == "Focus time") {
+            if (ignoredCategories.shouldCategoryBeIgnored(category, user)) {
                 continue
             }
 
