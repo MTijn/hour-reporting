@@ -62,7 +62,7 @@ image:
 ingress:
   enabled: true
   annotations:
-    traefik.ingress.kubernetes.io/whitelist-source-range: "89.184.180.107/32, 89.184.168.160/32"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "123.123.123.10"
     ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
     kubernetes.io/ingress.class: "traefik"
   path: /
