@@ -11,11 +11,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg bg-dark">
-        <a class="navbar-brand" href="/">
-            <h1 style="color: #FFFFFF">Hour reporting tool</h1>
-        </a>
-    </nav>
+    <#include "navbar.ftl">
 </header>
 <main role="main">
     <div class="container">
