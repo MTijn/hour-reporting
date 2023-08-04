@@ -1,0 +1,71 @@
+#nameOverride: "hour-reporting"
+#fullnameOverride: "hour-reporting"
+#ingress:
+#  enabled: true
+#  hosts:
+#    - "hour-reporting-{{- .Release.Namespace -}}-test.k8s.ispworks.nl"
+
+options:
+  java: ""
+  application: ""
+  logger: json
+configuration:
+  database:
+    host: "mysql-martijn.martijnk.svc.cluster.local"
+    port: 3306
+    poolSize: 2
+    schema: "hour-reporting"
+    timeZone: "UTC"
+    username: "test"
+    password: "test"
+  microsoft:
+    clientId: client
+    clientSecret: secret
+    clientScopes: "openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read"
+
+secret:
+  database:
+    existing: true
+    name: "hour-reporting-secret"
+    usernameKey: "database.username"
+    passwordKey: "database.password"
+  microsoft:
+    existing: true
+    name: "microsoft-client-credentials"
+    clientId: "microsoft.clientId"
+    clientSecret: "microsoft.clientSecret"
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 1234
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 1234
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+
+prometheus:
+  enabled: false
+  port: 8080
+  path: '/metrics'
+
+image:
+  repository: "ghcr.io"
+  image: "mtijn/hour-reporting"
+  tag: "0.0.1"
+
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/whitelist-source-range: "89.184.180.107/32, 89.184.168.160/32"
+    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+    kubernetes.io/ingress.class: "traefik"
+  path: /
+  hosts:
+    - hour-reporting.martijnk.k8s.ispworks.nl
+  backend_port: 8080

@@ -1,0 +1,1 @@
+{{ template "summa-service-stack.ingress" (list . "summa-service-stack") -}}

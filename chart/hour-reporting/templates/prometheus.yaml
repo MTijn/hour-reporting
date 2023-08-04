@@ -1,0 +1,1 @@
+{{ template "summa-service-stack.prometheus" (list . "summa-service-stack") -}}

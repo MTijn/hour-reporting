@@ -1,0 +1,45 @@
+{{- define "hour-reporting.additions" -}}
+{{- $hourReportingSecretName := .Values.secret.database.name -}}
+{{- $microsoftSecretName := .Values.secret.jira.name -}}
+
+env:
+  - name: JAVA_OPTS
+    value: {{ .Values.options.java }}
+  - name: APPLICATION_OPTS
+    value: {{ .Values.options.application }}
+  - name: HOUR_REPORTING_JDBC_URL
+    value: {{ printf "jdbc:mysql://%s:%.0f/%s?serverTimezone=%s" (required "Database connection host" .Values.configuration.database.host) .Values.configuration.database.port .Values.configuration.database.schema .Values.configuration.database.timeZone  }}
+  - name: HOUR_REPORTING_JDBC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ $hourReportingSecretName }}
+        key: {{ .Values.secret.database.passwordKey }}
+  - name: HOUR_REPORTING_JDBC_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: {{ $hourReportingSecretName }}
+        key: {{ .Values.secret.database.usernameKey }}
+  - name: JIRA_STATISTICS_JDBC_POOLSIZE
+    value: "{{ .Values.configuration.database.poolSize }}"
+  - name: MICROSOFT_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: {{ $microsoftSecretName }}
+        key: {{ .Values.secret.microsoft.clientId }}
+  - name: MICROSOFT_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: {{ $microsoftSecretName }}
+        key: {{ .Values.secret.microsoft.clientSecret }}
+  - name: MICROSOFT_CLIENT_SCOPES
+    value: "{{ .Values.configuration.microsoft.clientScopes | quote }}"
+  - name: LOG_APPENDER
+    value: {{ .Values.options.logger }}
+{{ if .Values.env }}
+{{ toYaml .Values.env | indent 2 }}
+{{ end }}
+{{- end -}}
+{{- $additions := fromYaml (include "hour-reporting.additions" .) -}}
+{{- $_ := set .Values "env" $additions.env -}}
+{{- $values := (list . "summa-service-stack") -}}
+{{- template "summa-service-stack.deployment" $values -}}

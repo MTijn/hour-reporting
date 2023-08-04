@@ -1,0 +1,6 @@
+dependencies:
+- name: summa-service-stack
+  repository: https://registry.k8s.ispworks.nl/chartrepo/operator-ks
+  version: 7.0.2
+digest: sha256:600844810751f139c36352ea4881abd8bfc1c141d675cbf0d662b8597f0112b6
+generated: "2023-06-09T12:45:31.785258626+02:00"
