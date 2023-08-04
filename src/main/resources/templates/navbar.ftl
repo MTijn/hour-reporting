@@ -8,11 +8,17 @@
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto dropstart">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" height="40" class="rounded-circle">
+                        <img
+                            src="data:image/jpeg;base64,${user.photo}"
+                            alt="${user.name}"
+                            width="40"
+                            height="40"
+                            class="rounded-circle"
+                        >
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/categories">Configure categories</a></li>

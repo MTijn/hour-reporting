@@ -31,6 +31,7 @@ class HomeController(
         val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
             ?: return RedirectView("/user/welcome")
 
+        model.addAttribute("user", user)
         model.addAttribute(
             "suggestedEntries",
             hoursSuggestionCalculator.suggestHoursForAnAuthenticatedUser(

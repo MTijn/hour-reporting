@@ -8,5 +8,6 @@ data class User(
     val categories: List<Category>,
     val ignoredCategories: List<IgnoredCategory>,
     val apiKey: String,
-    val jiraUserName: String
+    val jiraUserName: String,
+    val photo: String? = null
 )

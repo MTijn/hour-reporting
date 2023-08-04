@@ -17,9 +17,10 @@ class UserRepository(
             .addValue("name", user.name)
             .addValue("api_key", user.apiKey)
             .addValue("jira_user_name", user.jiraUserName)
+            .addValue("photo", user.photo)
 
         jdbcTemplate.update(
-            "insert into `user` (id, name, jira_api_key, jira_user_name) values (:id, :name, :api_key, :jira_user_name)",
+            "insert into `user` (id, name, jira_api_key, jira_user_name, `photo`) values (:id, :name, :api_key, :jira_user_name, :photo)",
             parameterSource
         )
     }
@@ -27,7 +28,7 @@ class UserRepository(
     @Throws(Exception::class)
     fun findUserById(id: UUID): User? {
         val parameterSource = MapSqlParameterSource().addValue("id", id.toString())
-        return jdbcTemplate.query("select id, name, jira_api_key, jira_user_name from `user` where id = :id", parameterSource) {
+        return jdbcTemplate.query("select id, name, jira_api_key, jira_user_name, photo from `user` where id = :id", parameterSource) {
                 resultSet, _ ->
             return@query User(
                 UUID.fromString(resultSet.getString("id")),
@@ -35,7 +36,8 @@ class UserRepository(
                 emptyList(),
                 emptyList(),
                 resultSet.getString("jira_api_key"),
-                resultSet.getString("jira_user_name")
+                resultSet.getString("jira_user_name"),
+                resultSet.getString("photo")
             )
         }.firstOrNull()
     }

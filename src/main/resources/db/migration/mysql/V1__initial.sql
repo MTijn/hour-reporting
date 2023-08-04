@@ -2,7 +2,8 @@ create table `user`
 (
     `id` char(36) not null,
     `name` varchar(255) not null,
-    `jira_api_key` text not null
+    `jira_api_key` text not null,
+    `photo` text not null
 );
 
 create table `category`
