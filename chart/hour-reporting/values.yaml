@@ -11,29 +11,34 @@ options:
   logger: json
 configuration:
   database:
-    host: "mysql-martijn.martijnk.svc.cluster.local"
-    port: 3306
+    host: "database.jdbc.url"
     poolSize: 2
-    schema: "hour-reporting"
-    timeZone: "UTC"
     username: "test"
     password: "test"
   microsoft:
     clientId: client
     clientSecret: secret
     clientScopes: "openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read"
+  keys:
+    privateKey: "asdfasdf"
+    publicKey: "asdfasdf"
 
 secret:
   database:
-    existing: true
+    existing: false
     name: "hour-reporting-secret"
     usernameKey: "database.username"
     passwordKey: "database.password"
   microsoft:
-    existing: true
+    existing: false
     name: "microsoft-client-credentials"
     clientId: "microsoft.clientId"
     clientSecret: "microsoft.clientSecret"
+  keys:
+    existing: false
+    name: "encryption-keys"
+    privateKeyKey: "private_key.pem"
+    publicKeyKey: "public_key.pem"
 
 livenessProbe:
   httpGet:
@@ -67,5 +72,19 @@ ingress:
     kubernetes.io/ingress.class: "traefik"
   path: /
   hosts:
-    - hour-reporting.martijnk.k8s.ispworks.nl
+    - some-host
   backend_port: 8080
+
+volumeMounts:
+  - name: encryption-keys
+    mountPath: "/encryption-keys"
+
+volumes:
+  - name: encryption-keys
+    secret:
+      secretName: "encryption-keys"
+      items:
+        - key: "private_key.pem"
+          path: "private_key.pem"
+        - key: "public_key.pem"
+          path: "public_key.pem"
