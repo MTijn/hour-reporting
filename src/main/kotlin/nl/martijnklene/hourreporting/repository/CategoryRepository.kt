@@ -5,7 +5,6 @@ import nl.martijnklene.hourreporting.model.IgnoredCategory
 import nl.martijnklene.hourreporting.model.User
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
 import java.util.*
