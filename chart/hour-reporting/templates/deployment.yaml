@@ -1,6 +1,6 @@
 {{- define "hour-reporting.additions" -}}
 {{- $hourReportingSecretName := .Values.secret.database.name -}}
-{{- $microsoftSecretName := .Values.secret.jira.name -}}
+{{- $microsoftSecretName := .Values.secret.microsoft.name -}}
 
 env:
   - name: JAVA_OPTS
@@ -32,7 +32,7 @@ env:
         name: {{ $microsoftSecretName }}
         key: {{ .Values.secret.microsoft.clientSecret }}
   - name: MICROSOFT_CLIENT_SCOPES
-    value: "{{ .Values.configuration.microsoft.clientScopes | quote }}"
+    value: {{ .Values.configuration.microsoft.clientScopes | quote }}
   - name: LOG_APPENDER
     value: {{ .Values.options.logger }}
 {{ if .Values.env }}
