@@ -38,6 +38,10 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/${{ github.repository }}/hour-reporting
+      - name: Download jar for publishing
+        uses: actions/download-artifact@v1
+        with:
+          name: jarpack
       - name: Build and push Docker images
         uses: docker/build-push-action@v4
         with:
