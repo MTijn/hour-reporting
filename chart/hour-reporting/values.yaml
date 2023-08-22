@@ -11,8 +11,11 @@ options:
   logger: json
 configuration:
   database:
-    host: "database.jdbc.url"
+    host: "mysql-martijn.martijnk.svc.cluster.local"
+    port: 3306
     poolSize: 2
+    schema: "hour-reporting"
+    timeZone: "UTC"
     username: "test"
     password: "test"
   microsoft:
@@ -25,17 +28,17 @@ configuration:
 
 secret:
   database:
-    existing: false
-    name: "hour-reporting-secret"
+    existing: true
+    name: "jira-statistics-secret"
     usernameKey: "database.username"
     passwordKey: "database.password"
   microsoft:
-    existing: false
-    name: "microsoft-client-credentials"
+    existing: true
+    name: "microsoft-credentials-secret"
     clientId: "microsoft.clientId"
     clientSecret: "microsoft.clientSecret"
   keys:
-    existing: false
+    existing: true
     name: "encryption-keys"
     privateKeyKey: "private_key.pem"
     publicKeyKey: "public_key.pem"
@@ -61,18 +64,18 @@ prometheus:
 
 image:
   repository: "ghcr.io"
-  image: "mtijn/hour-reporting"
-  tag: "0.0.1"
+  image: "ghcr.io/mtijn/hour-reporting/hour-reporting"
+  tag: "latest"
 
 ingress:
   enabled: true
   annotations:
-    traefik.ingress.kubernetes.io/whitelist-source-range: "123.123.123.10"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "89.184.180.107/32, 89.184.168.160/32"
     ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
     kubernetes.io/ingress.class: "traefik"
   path: /
   hosts:
-    - some-host
+    - hour-reporting.k8s.ispworks.nl
   backend_port: 8080
 
 volumeMounts:
