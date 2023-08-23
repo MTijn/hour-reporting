@@ -12,7 +12,9 @@ class WebSecurityConfig {
         http.authorizeHttpRequests { request ->
             request.requestMatchers("/actuator").permitAll()
             request.requestMatchers("/actuator/**").permitAll()
+            request.requestMatchers("/**").authenticated()
         }
+        http.oauth2Login {}
         return http.build()
     }
 }
