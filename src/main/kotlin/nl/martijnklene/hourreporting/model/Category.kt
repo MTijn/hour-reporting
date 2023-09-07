@@ -4,7 +4,7 @@ import java.util.*
 
 data class Category(
     val userId: UUID,
-    val outlookTaskId: UUID?,
+    val categoryName: String,
     val jiraProjectId: String,
     val default: Boolean
 )

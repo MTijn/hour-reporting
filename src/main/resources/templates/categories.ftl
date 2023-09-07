@@ -30,7 +30,7 @@
                                         class="form-check-input mt-0"
                                         type="radio"
                                         aria-label="Fallback category"
-                                        value="${category.id}"
+                                        value="${category.displayName}"
                                         id="default"
                                         name="default"
                                         <#if category.isDefault()>checked="checked"</#if>
@@ -39,8 +39,8 @@
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="category_${category.id}"
-                                    name="categories[${category.id}]"
+                                    id="category_${category.displayName}"
+                                    name="categories[${category.displayName}]"
                                     value="${category.jiraTicketId! ''}"
                                 >
                             </div>

@@ -16,7 +16,7 @@ class CategoryRepository(
     private val rowMapper = RowMapper { resultSet: ResultSet, _: Int ->
         Category(
             userId = UUID.fromString(resultSet.getString("user_id")),
-            outlookTaskId = UUID.fromString(resultSet.getString("outlook_category_id")),
+            categoryName = resultSet.getString("category_name"),
             jiraProjectId = resultSet.getString("jira_project_id"),
             default = resultSet.getBoolean("default")
         )
@@ -38,9 +38,9 @@ class CategoryRepository(
 
     fun save(category: Category) {
         jdbcTemplate.update(
-            "replace into `category` (`user_id`, `outlook_category_id`, `jira_project_id`, `default`) values (?, ?, ?, ?)",
+            "replace into `category` (`user_id`, `category_name`, `jira_project_id`, `default`) values (?, ?, ?, ?)",
             category.userId.toString(),
-            category.outlookTaskId.toString(),
+            category.categoryName,
             category.jiraProjectId,
             category.default
         )

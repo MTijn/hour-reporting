@@ -51,7 +51,7 @@ class CategoryController(
             categoryRepository.save(
                 nl.martijnklene.hourreporting.model.Category(
                     user.id,
-                    UUID.fromString(it.key),
+                    it.key,
                     it.value,
                     postedForm.default == it.key
                 )
@@ -102,8 +102,8 @@ class CategoryController(
         Category(
             id = UUID.fromString(id),
             displayName = displayName,
-            isDefault = userCategories.firstOrNull { it.outlookTaskId == UUID.fromString(id) }?.default == true,
-            jiraTicketId = userCategories.firstOrNull { it.outlookTaskId == UUID.fromString(id) }?.jiraProjectId
+            isDefault = userCategories.firstOrNull { it.categoryName == displayName }?.default == true,
+            jiraTicketId = userCategories.firstOrNull { it.categoryName == displayName }?.jiraProjectId
         )
 
     fun OutlookCategory.toIgnoredCategory(userCategories: Collection<nl.martijnklene.hourreporting.model.IgnoredCategory>) =
