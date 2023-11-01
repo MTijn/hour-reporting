@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js "></script>
 </head>
 <body>
 <header>
@@ -19,7 +20,7 @@
             <div class="col-12">
                 <h2>Suggested time entries</h2>
                 <form action="/enter" method="post">
-                    <table class="table table-striped">
+                    <table id="suggestedEntries" class="table table-striped">
                         <thead>
                         <tr>
                             <th>Date</th>
@@ -45,6 +46,9 @@
                                     <input type="hidden" value="${suggestedEntry.projectDescription}"
                                            name="hours[${suggestedEntry.date}][projectDescription]">
                                 </td>
+                                <td>
+                                    <button class="delete_row btn btn-outline-danger">Delete</button>
+                                </td>
                             </tr>
                         </#list>
                         </tbody>
@@ -56,5 +60,12 @@
         </div>
     </div>
 </main>
+<script type="application/javascript">
+    $(document).ready(function() {
+        $("#suggestedEntries").on('click', '.delete_row', function() {
+            $(this).closest('tr').remove();
+        });
+    });
+</script>
 </body>
 </html>
