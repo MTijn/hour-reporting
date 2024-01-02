@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.6</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.martijnklene</groupId>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.2.2</version>
+            <version>5.2.3</version>
         </dependency>
 
         <dependency>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
-            <version>5.7.0</version>
+            <version>5.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.graph</groupId>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>msal4j</artifactId>
-            <version>1.14.0</version>
+            <version>1.14.2</version>
         </dependency>
     </dependencies>
 
