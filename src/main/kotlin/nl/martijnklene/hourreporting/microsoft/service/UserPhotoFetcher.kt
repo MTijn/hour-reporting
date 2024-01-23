@@ -10,8 +10,12 @@ class UserPhotoFetcher(
     private val graphClientBuilder: GraphClientBuilder
 ) {
     fun fetchPhotoFromLoggedInUser(client: OAuth2AuthorizedClient): String {
-        return Base64.getEncoder().encodeToString(
-            graphClientBuilder.buildGraphClient(client).me().photo().content().buildRequest().get()?.readAllBytes()
-        )
+        try {
+            return Base64.getEncoder().encodeToString(
+                graphClientBuilder.buildGraphClient(client).me().photo().content().buildRequest().get()?.readAllBytes()
+            )
+        } catch (exception: Exception) {
+            return ""
+        }
     }
 }

@@ -5,4 +5,4 @@ services:
     environment:
       MYSQL_SCHEMAS: hour_reporting
     ports:
-      - "3310:3306"
+      - "3312:3306"

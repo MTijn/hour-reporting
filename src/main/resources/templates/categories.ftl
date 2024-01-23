@@ -20,11 +20,12 @@
                 <h2>Please define the categories that should be mapped to Jira stories</h2>
                 <form action="/categories" method="post">
                     <#list categories as category>
-                    <div class="row mb-3">
-                        <div class="input-group mb-3">
-                            <div class="input-group">
-                                <label for="category_${category.id}"
-                                       class="col-sm-2 col-form-label">${category.displayName}</label>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="category_${category.id}" class="col-form-label">${category.displayName}</label>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="input-group mb-3">
                                 <div class="input-group-text">
                                     <input
                                         class="form-check-input mt-0"
@@ -45,9 +46,10 @@
                                 >
                             </div>
                         </div>
-                        </#list>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                        <input type="submit" value="Send">
+                    </div>
+                    </#list>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <input class="btn btn-primary" type="submit" value="Send">
                 </form>
             </div>
         </div>

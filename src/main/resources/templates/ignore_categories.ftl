@@ -20,7 +20,7 @@
                 <h2>Please define the categories that should be ignored</h2>
                 <form action="/categories/ignored" method="post">
                     <#list categories as category>
-                        <div class="row mb-3">
+                        <div class="row">
                             <div class="input-group mb-3">
                                 <div class="form-check">
                                     <input
