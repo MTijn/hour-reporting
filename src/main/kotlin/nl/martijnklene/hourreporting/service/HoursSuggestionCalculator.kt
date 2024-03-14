@@ -28,12 +28,12 @@ class HoursSuggestionCalculator(
         workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).forEach {
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.billableSeconds.toLong()))
         }
-        for (event in calendarService.getEventsForADay(date, client)!!.currentPage) {
+        calendarService.getEventsForADay(date, client)!!.currentPage.forEach { event ->
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
-                continue
+                return@forEach
             }
             if (event.responseStatus!!.response!!.name != "ACCEPTED" && event.responseStatus!!.response!!.name != "ORGANIZER") {
-                continue
+                return@forEach
             }
             val category = event.categories!!.firstOrNull()
 
@@ -46,18 +46,22 @@ class HoursSuggestionCalculator(
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
                 )
-                break
+                return@forEach
             }
 
             val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user)
             if (ignoredCategories.shouldCategoryBeIgnored(category, user)) {
-                continue
+                return@forEach
             }
 
-            val duration = Duration.between(
+            var duration = Duration.between(
                 LocalDateTime.parse(event.start!!.dateTime),
                 LocalDateTime.parse(event.end!!.dateTime)
             )
+
+            if (durationToEnterIntoTempo < duration) {
+                duration = durationToEnterIntoTempo
+            }
 
             suggestedTimeEntries.add(
                 SuggestedTimeEntry(
