@@ -17,7 +17,8 @@ class CategoryRepository(
         Category(
             userId = UUID.fromString(resultSet.getString("user_id")),
             categoryName = resultSet.getString("category_name"),
-            jiraProjectId = resultSet.getString("jira_project_id"),
+            id = resultSet.getInt("jira_project_id"),
+            jiraKey = resultSet.getString("jira_issue_key"),
             default = resultSet.getBoolean("default")
         )
     }
@@ -38,10 +39,11 @@ class CategoryRepository(
 
     fun save(category: Category) {
         jdbcTemplate.update(
-            "replace into `category` (`user_id`, `category_name`, `jira_project_id`, `default`) values (?, ?, ?, ?)",
+            "replace into `category` (`user_id`, `category_name`, `jira_project_id`, `jira_issue_key`, `default`) values (?, ?, ?, ?, ?)",
             category.userId.toString(),
             category.categoryName,
-            category.jiraProjectId,
+            category.id,
+            category.jiraKey,
             category.default
         )
     }

@@ -1,15 +1,12 @@
 package nl.martijnklene.hourreporting.tempo.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import kong.unirest.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLogRequest
-import nl.martijnklene.hourreporting.tempo.model.WorkLog
-import org.apache.hc.client5.http.classic.methods.HttpPost
-import org.apache.hc.client5.http.impl.classic.HttpClients
-import org.apache.hc.core5.http.ContentType
-import org.apache.hc.core5.http.HttpHeaders
-import org.apache.hc.core5.http.io.entity.StringEntity
+import nl.martijnklene.hourreporting.tempo.model.WorkLogs
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -19,32 +16,23 @@ class WorkLogFetcher(
     private val objectMapper: ObjectMapper,
     private val encryption: StringEncryption
 ) {
-    fun fetchWorkLogsBetweenDates(from: LocalDate, to: LocalDate, user: User): Collection<WorkLog> {
-        val httpClient = HttpClients.createDefault()
-        val request = HttpPost("https://jira.voiceworks.com/rest/tempo-timesheets/4/worklogs/search")
-        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer ${encryption.decryptText(user.apiKey)}")
-        val requestJson = objectMapper.writeValueAsString(
-            WorkLogRequest(
-                from.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                to.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                listOf(user.jiraUserName)
+    fun fetchWorkLogsBetweenDates(start: LocalDate, end: LocalDate, tempoUser: User): WorkLogs {
+        val worksLogs = Unirest
+            .post("https://api.tempo.io/4/worklogs/search?limit=500")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer ${encryption.decryptText(tempoUser.tempoApiKey)}")
+            .body(
+                objectMapper.writeValueAsString(
+                    WorkLogRequest(
+                        from = start.format(DateTimeFormatter.ISO_DATE),
+                        to = end.format(DateTimeFormatter.ISO_DATE),
+                        authorIds = listOf(tempoUser.jiraAccountId)
+                    )
+                )
             )
-        )
-        request.entity = StringEntity(
-            requestJson,
-            ContentType.APPLICATION_JSON,
-        )
-        val response = httpClient.execute(request)
-        if (response.code != 200) {
-            return emptyList()
-        }
+            .asJson()
+            .body
 
-        return objectMapper.readValue(
-            response.entity.content,
-            objectMapper.typeFactory.constructCollectionType(
-                MutableList::class.java,
-                WorkLog::class.java
-            )
-        )
+        return objectMapper.readValue<WorkLogs>(worksLogs.toString())
     }
 }

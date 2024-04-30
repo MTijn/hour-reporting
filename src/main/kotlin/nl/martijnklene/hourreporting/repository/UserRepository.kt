@@ -1,26 +1,31 @@
 package nl.martijnklene.hourreporting.repository
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import nl.martijnklene.hourreporting.model.User
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import java.sql.ResultSet
 import java.util.*
 
 @Repository
 class UserRepository(
-    private val jdbcTemplate: NamedParameterJdbcTemplate
+    private val jdbcTemplate: NamedParameterJdbcTemplate,
+    private val objectMapper: ObjectMapper
 ) {
+    private val rowMapper = RowMapper { resultSet: ResultSet, _: Int ->
+        objectMapper.readValue(resultSet.getString("data"), User::class.java)
+    }
+
     @Throws(Exception::class)
     fun save(user: User) {
         val parameterSource = MapSqlParameterSource()
             .addValue("id", user.id.toString())
-            .addValue("name", user.name)
-            .addValue("api_key", user.apiKey)
-            .addValue("jira_user_name", user.jiraUserName)
-            .addValue("photo", user.photo)
+            .addValue("data", objectMapper.writeValueAsString(user))
 
         jdbcTemplate.update(
-            "insert into `user` (id, name, jira_api_key, jira_user_name, `photo`) values (:id, :name, :api_key, :jira_user_name, :photo)",
+            "insert into `user` (`id`, `data`) values (:id, :data)",
             parameterSource
         )
     }
@@ -28,18 +33,11 @@ class UserRepository(
     @Throws(Exception::class)
     fun findUserById(id: UUID): User? {
         val parameterSource = MapSqlParameterSource().addValue("id", id.toString())
-        return jdbcTemplate.query("select id, name, jira_api_key, jira_user_name, photo from `user` where id = :id", parameterSource) {
-                resultSet, _ ->
-            return@query User(
-                UUID.fromString(resultSet.getString("id")),
-                resultSet.getString("name"),
-                emptyList(),
-                emptyList(),
-                resultSet.getString("jira_api_key"),
-                resultSet.getString("jira_user_name"),
-                resultSet.getString("photo")
-            )
-        }.firstOrNull()
+        return jdbcTemplate.query(
+            "select * from user where id = :id",
+            parameterSource,
+            rowMapper
+        ).firstOrNull()
     }
 
     @Throws(Exception::class)

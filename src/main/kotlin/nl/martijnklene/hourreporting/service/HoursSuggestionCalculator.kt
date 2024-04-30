@@ -25,8 +25,8 @@ class HoursSuggestionCalculator(
     ): Collection<SuggestedTimeEntry> {
         var durationToEnterIntoTempo = Duration.parse("PT8H")
         val suggestedTimeEntries = mutableListOf<SuggestedTimeEntry>()
-        workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).forEach {
-            durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.billableSeconds.toLong()))
+        workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).results.forEach {
+            durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.timeSpentSeconds.toLong()))
         }
         calendarService.getEventsForADay(date, client)!!.currentPage.forEach { event ->
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
@@ -41,7 +41,8 @@ class HoursSuggestionCalculator(
                 suggestedTimeEntries.add(
                     SuggestedTimeEntry(
                         durationToEnterIntoTempo,
-                        categoryMapper.mapCategoryToJiraTaskId(category, user),
+                        categoryMapper.mapCategoryToJiraTaskId(category, user)!!,
+                        categoryMapper.mapCategoryToJiraKey(category, user)!!,
                         event.subject.toString(),
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
@@ -50,6 +51,7 @@ class HoursSuggestionCalculator(
             }
 
             val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user)
+            val taskKey = categoryMapper.mapCategoryToJiraKey(category, user)
             if (ignoredCategories.shouldCategoryBeIgnored(category, user)) {
                 return@forEach
             }
@@ -63,14 +65,17 @@ class HoursSuggestionCalculator(
                 duration = durationToEnterIntoTempo
             }
 
-            suggestedTimeEntries.add(
-                SuggestedTimeEntry(
-                    duration,
-                    taskId,
-                    event.subject.toString(),
-                    LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
+            if (taskId != null) {
+                suggestedTimeEntries.add(
+                    SuggestedTimeEntry(
+                        duration,
+                        taskId.or(0),
+                        taskKey.orEmpty(),
+                        event.subject.toString(),
+                        LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
+                    )
                 )
-            )
+            }
 
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(duration)
         }
@@ -82,7 +87,8 @@ class HoursSuggestionCalculator(
         suggestedTimeEntries.add(
             SuggestedTimeEntry(
                 durationToEnterIntoTempo,
-                categoryMapper.mapCategoryToJiraTaskId("", user),
+                categoryMapper.mapCategoryToJiraTaskId("", user)!!,
+                categoryMapper.mapCategoryToJiraKey("", user)!!,
                 "Meeting",
                 date
             )
@@ -92,7 +98,7 @@ class HoursSuggestionCalculator(
     }
 
     fun suggestHoursForAnAuthenticatedUser(user: User, client: OAuth2AuthorizedClient): List<SuggestedTimeEntry> {
-        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(user.apiKey, client)
+        val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(user.jiraApiKey, client)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
         dates.forEach {
             this.suggestHoursForADay(it, client, user)

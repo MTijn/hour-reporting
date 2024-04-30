@@ -3,5 +3,5 @@ package nl.martijnklene.hourreporting.tempo.dto
 data class WorkLogRequest(
     val from: String,
     val to: String,
-    val worker: Collection<String>
+    val authorIds: Collection<String>
 )

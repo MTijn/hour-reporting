@@ -1,25 +1,20 @@
 package nl.martijnklene.hourreporting.tempo.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 data class WorkLog(
-    val billableSeconds: Int,
-    val timeSpent: String,
-    val issue: Issue,
-    val timeSpentInSeconds: Int,
-    val tempoWorkLogId: Int,
-    val comment: String,
-    val location: Location,
-    val attributes: Map<String, Any>,
-    val originTaskId: Int,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Europe/Amsterdam") val dateCreated:
-        ZonedDateTime,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Europe/Amsterdam") val dateUpdated:
-        ZonedDateTime,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Europe/Amsterdam") val started:
-        ZonedDateTime,
-    val worker: String,
-    val updater: String,
-    val originId: Int
+    val self: String,
+    val tempoWorklogId: String,
+    val issue: LinkedHashMap<String, String>,
+    val timeSpentSeconds: Int,
+    val billableSeconds: Int?,
+    val startDate: LocalDate,
+    val startTime: LocalTime,
+    val description: String,
+    val createdAt: ZonedDateTime,
+    val updatedAt: ZonedDateTime,
+    val author: LinkedHashMap<String, Any>,
+    val attributes: LinkedHashMap<String, Any>,
 )

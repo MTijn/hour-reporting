@@ -42,7 +42,7 @@
                                     class="form-control"
                                     id="category_${category.displayName}"
                                     name="categories[${category.displayName}]"
-                                    value="${category.jiraTicketId! ''}"
+                                    value="${category.jiraKey! ''}"
                                 >
                             </div>
                         </div>

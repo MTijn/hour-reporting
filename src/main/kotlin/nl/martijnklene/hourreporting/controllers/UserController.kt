@@ -2,6 +2,7 @@ package nl.martijnklene.hourreporting.controllers
 
 import nl.martijnklene.hourreporting.controllers.response.UserDto
 import nl.martijnklene.hourreporting.encryption.StringEncryption
+import nl.martijnklene.hourreporting.jira.service.JiraUserFetcher
 import nl.martijnklene.hourreporting.microsoft.service.UserPhotoFetcher
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.repository.UserRepository
@@ -22,7 +23,8 @@ import java.util.*
 class UserController(
     private val userRepository: UserRepository,
     private val encryption: StringEncryption,
-    private val userPhotoFetcher: UserPhotoFetcher
+    private val userPhotoFetcher: UserPhotoFetcher,
+    private val jiraUserFetcher: JiraUserFetcher
 ) {
     @GetMapping("/user/welcome")
     fun welcomeUser(modelMap: ModelMap): Any {
@@ -43,14 +45,17 @@ class UserController(
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
 
         val userImage = userPhotoFetcher.fetchPhotoFromLoggedInUser(client)
+        val jiraUser = jiraUserFetcher.findUserDetails(user.jiraUserName, user.jiraApiKey)
         userRepository.save(
             User(
                 UUID.fromString(authentication.principal.attributes["oid"].toString()),
                 authentication.name,
                 emptyList(),
                 emptyList(),
-                encryption.encryptText(user.apiKey),
-                user.jiraUserName,
+                encryption.encryptText(user.jiraApiKey),
+                encryption.encryptText(user.tempoApiKey),
+                jiraUser!!.emailAddress,
+                jiraUser.accountId,
                 userImage
             )
         )

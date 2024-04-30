@@ -27,8 +27,12 @@
                 <p>The API key itself is stored in the app's database in an encrypted way</p>
                 <form action="/user" method="post">
                     <div class="form-group">
-                        <label for="apiKey">Jira API key</label>
-                        <input type="password" class="form-control" id="apiKey" name="apiKey">
+                        <label for="jiraApiKey">Jira API key</label>
+                        <input type="password" class="form-control" id="jiraApiKey" name="jiraApiKey">
+                    </div>
+                    <div class="form-group">
+                        <label for="tempoApiKey">Tempo API key</label>
+                        <input type="password" class="form-control" id="tempoApiKey" name="tempoApiKey">
                     </div>
                     <div class="form-group">
                         <label for="jira_user_name">Jira user name</label>

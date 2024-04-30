@@ -5,8 +5,7 @@ import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLog
 import nl.martijnklene.hourreporting.tempo.service.WorkLogPoster
 import org.springframework.stereotype.Component
-import java.time.Duration
-import java.time.LocalDate
+import java.time.*
 
 @Component
 class HoursPoster(
@@ -25,13 +24,17 @@ class HoursPoster(
                 val duration = Duration.ofMinutes(postedHour.toLong())
 
                 workLogPoster.postWorkLogItem(
-                    user.apiKey,
+                    user.jiraApiKey,
+                    postedTaskIds[index],
                     WorkLog(
                         timeSpentSeconds = duration.toSeconds().toInt(),
                         comment = postedDescriptions[index],
-                        originTaskId = postedTaskIds[index],
-                        worker = user.jiraUserName,
-                        started = LocalDate.parse(it.key)
+                        started = ZonedDateTime.ofInstant(
+                            LocalDate.parse(it.key)
+                                .atStartOfDay()
+                                .toInstant(ZoneOffset.UTC),
+                            ZoneId.of("Europe/Amsterdam")
+                        )
                     )
                 )
             }

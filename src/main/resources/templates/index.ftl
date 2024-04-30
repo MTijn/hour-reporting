@@ -34,14 +34,14 @@
                             <tr>
                                 <td>${suggestedEntry.date.format('MEDIUM_DATE')}</td>
                                 <td>${suggestedEntry.projectDescription}</td>
-                                <td>${suggestedEntry.taskId}</td>
+                                <td>${suggestedEntry.taskKey}</td>
                                 <td>
                                     <input
                                         type="number"
                                         value="${suggestedEntry.duration.toMinutes()}"
                                         name="hours[${suggestedEntry.date}][hours]"
                                     >
-                                    <input type="hidden" value="${suggestedEntry.taskId}"
+                                    <input type="hidden" value="${suggestedEntry.taskId?c}"
                                            name="hours[${suggestedEntry.date}][taskId]">
                                     <input type="hidden" value="${suggestedEntry.projectDescription}"
                                            name="hours[${suggestedEntry.date}][projectDescription]">

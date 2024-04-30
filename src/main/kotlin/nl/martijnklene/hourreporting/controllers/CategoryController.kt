@@ -1,10 +1,11 @@
 package nl.martijnklene.hourreporting.controllers
 
 import com.microsoft.graph.models.OutlookCategory
-import nl.martijnklene.hourreporting.controllers.response.PostedCategoryMapping
 import nl.martijnklene.hourreporting.controllers.dto.Category
 import nl.martijnklene.hourreporting.controllers.dto.IgnoredCategory
+import nl.martijnklene.hourreporting.controllers.response.PostedCategoryMapping
 import nl.martijnklene.hourreporting.controllers.response.PostedIgnoredCategories
+import nl.martijnklene.hourreporting.jira.service.JiraUserFetcher
 import nl.martijnklene.hourreporting.microsoft.service.CategoriesFetcher
 import nl.martijnklene.hourreporting.repository.CategoryRepository
 import nl.martijnklene.hourreporting.repository.UserRepository
@@ -22,7 +23,8 @@ import java.util.*
 class CategoryController(
     private val userRepository: UserRepository,
     private val categoriesFetcher: CategoriesFetcher,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val jiraIssueFetcher: JiraUserFetcher
 ) {
     @GetMapping("/categories")
     fun mapCategoriesToJiraTasks(
@@ -48,12 +50,14 @@ class CategoryController(
             ?: return "redirect:/"
 
         postedForm.categories?.filter { it.value.isNotEmpty() }?.forEach {
+            val jiraIssue = jiraIssueFetcher.findJiraIssuesByIssueKey(it.value, user.jiraUserName, user.jiraApiKey)
             categoryRepository.save(
                 nl.martijnklene.hourreporting.model.Category(
-                    user.id,
-                    it.key,
-                    it.value,
-                    postedForm.default == it.key
+                    userId = user.id,
+                    id = jiraIssue.id,
+                    jiraKey = jiraIssue.key,
+                    categoryName = it.key,
+                    default = postedForm.default == it.key
                 )
             )
         }
@@ -103,7 +107,8 @@ class CategoryController(
             id = UUID.fromString(id),
             displayName = displayName,
             isDefault = userCategories.firstOrNull { it.categoryName == displayName }?.default == true,
-            jiraTicketId = userCategories.firstOrNull { it.categoryName == displayName }?.jiraProjectId
+            jiraTicketId = userCategories.firstOrNull { it.categoryName == displayName }?.id,
+            jiraKey = userCategories.firstOrNull { it.categoryName == displayName }?.jiraKey
         )
 
     fun OutlookCategory.toIgnoredCategory(userCategories: Collection<nl.martijnklene.hourreporting.model.IgnoredCategory>) =
