@@ -16,12 +16,13 @@ class WorkLogPoster(
         issueKey: String,
         item: WorkLog,
     ) {
-        val response = Unirest.post("https://enreach-services.atlassian.net/rest/api/2/issue/$issueKey/worklog")
-            .basicAuth("martijn.klene@enreach.com", encryption.decryptText(token))
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .body(objectMapper.writeValueAsString(item))
-            .asJson()
+        val response =
+            Unirest.post("https://enreach-services.atlassian.net/rest/api/2/issue/$issueKey/worklog")
+                .basicAuth("martijn.klene@enreach.com", encryption.decryptText(token))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(objectMapper.writeValueAsString(item))
+                .asJson()
         val result = response.body
     }
 }

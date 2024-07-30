@@ -32,8 +32,9 @@ class CategoryController(
         @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return "redirect:/"
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return "redirect:/"
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
             "categories",
@@ -46,8 +47,9 @@ class CategoryController(
     @PostMapping("/categories")
     fun changeMapping(postedForm: PostedCategoryMapping): String {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return "redirect:/"
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return "redirect:/"
 
         postedForm.categories?.filter { it.value.isNotEmpty() }?.forEach {
             val jiraIssue = jiraIssueFetcher.findJiraIssuesByIssueKey(it.value, user.jiraUserName, user.jiraApiKey)
@@ -70,8 +72,9 @@ class CategoryController(
         @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return "redirect:/"
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return "redirect:/"
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
             "categories",
@@ -84,8 +87,9 @@ class CategoryController(
     @PostMapping("/categories/ignored")
     fun changeIgnoredMapping(ignoredCategories: PostedIgnoredCategories): String {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return "redirect:/"
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return "redirect:/"
 
         if (ignoredCategories.categories.isNullOrEmpty()) {
             categoryRepository.deleteIgnoredCategories(user)

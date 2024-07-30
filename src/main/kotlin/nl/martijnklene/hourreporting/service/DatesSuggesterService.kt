@@ -11,7 +11,10 @@ import java.util.stream.Collectors
 class DatesSuggesterService(
     private val workingHoursFetcher: WorkingHoursFetcher
 ) {
-    fun suggestDaysForTheAuthenticatedUser(apiKey: String, client: OAuth2AuthorizedClient): List<LocalDate> {
+    fun suggestDaysForTheAuthenticatedUser(
+        apiKey: String,
+        client: OAuth2AuthorizedClient
+    ): List<LocalDate> {
         val workingDays = workingHoursFetcher.findWorkingHoursFromAuthenticatedUser(client)!!.daysOfWeek
 
         val firstDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).minusMonths(1)

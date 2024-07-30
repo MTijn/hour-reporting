@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component
 class IgnoredCategories(
     private val categoryRepository: CategoryRepository
 ) {
-    fun shouldCategoryBeIgnored(category: String?, user: User): Boolean {
+    fun shouldCategoryBeIgnored(
+        category: String?,
+        user: User
+    ): Boolean {
         val ignoredCategories = categoryRepository.findIgnoredCategoriesForUser(user)
         return ignoredCategories.any { it.name == category }
     }

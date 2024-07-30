@@ -13,7 +13,10 @@ class JiraUserFetcher(
     private val objectMapper: ObjectMapper,
     private val encryption: StringEncryption
 ) {
-    fun findUserDetails(userName: String, jiraToken: String): JiraAccount? {
+    fun findUserDetails(
+        userName: String,
+        jiraToken: String
+    ): JiraAccount? {
         return objectMapper.readValue<JiraAccount>(
             Unirest
                 .get("https://enreach-services.atlassian.net/rest/api/3/myself")
@@ -24,7 +27,11 @@ class JiraUserFetcher(
         )
     }
 
-    fun findJiraIssuesByIssueKey(issueId: String, userName: String, jiraToken: String): Issue {
+    fun findJiraIssuesByIssueKey(
+        issueId: String,
+        userName: String,
+        jiraToken: String
+    ): Issue {
         return objectMapper.readValue<Issue>(
             Unirest
                 .get("https://enreach-services.atlassian.net/rest/api/3/issue/$issueId")

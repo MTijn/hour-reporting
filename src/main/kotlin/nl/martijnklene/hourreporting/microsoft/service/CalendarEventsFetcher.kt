@@ -1,8 +1,5 @@
 package nl.martijnklene.hourreporting.microsoft.service
 
-import com.microsoft.graph.options.Option
-import com.microsoft.graph.options.QueryOption
-import com.microsoft.graph.requests.EventCollectionPage
 import nl.martijnklene.hourreporting.microsoft.builder.GraphClientBuilder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.stereotype.Component
@@ -15,7 +12,10 @@ import java.util.*
 class CalendarEventsFetcher(
     private val graphClientBuilder: GraphClientBuilder
 ) {
-    fun getEventsForADay(date: LocalDate, client: OAuth2AuthorizedClient): EventCollectionPage? {
+    fun getEventsForADay(
+        date: LocalDate,
+        client: OAuth2AuthorizedClient
+    ): EventCollectionPage? {
         val options = LinkedList<Option>()
         options.add(
             QueryOption(

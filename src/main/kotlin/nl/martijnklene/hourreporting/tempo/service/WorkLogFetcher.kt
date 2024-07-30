@@ -16,22 +16,27 @@ class WorkLogFetcher(
     private val objectMapper: ObjectMapper,
     private val encryption: StringEncryption
 ) {
-    fun fetchWorkLogsBetweenDates(start: LocalDate, end: LocalDate, tempoUser: User): WorkLogs {
-        val worksLogs = Unirest
-            .post("https://api.tempo.io/4/worklogs/search?limit=500")
-            .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer ${encryption.decryptText(tempoUser.tempoApiKey)}")
-            .body(
-                objectMapper.writeValueAsString(
-                    WorkLogRequest(
-                        from = start.format(DateTimeFormatter.ISO_DATE),
-                        to = end.format(DateTimeFormatter.ISO_DATE),
-                        authorIds = listOf(tempoUser.jiraAccountId)
+    fun fetchWorkLogsBetweenDates(
+        start: LocalDate,
+        end: LocalDate,
+        tempoUser: User
+    ): WorkLogs {
+        val worksLogs =
+            Unirest
+                .post("https://api.tempo.io/4/worklogs/search?limit=500")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer ${encryption.decryptText(tempoUser.tempoApiKey)}")
+                .body(
+                    objectMapper.writeValueAsString(
+                        WorkLogRequest(
+                            from = start.format(DateTimeFormatter.ISO_DATE),
+                            to = end.format(DateTimeFormatter.ISO_DATE),
+                            authorIds = listOf(tempoUser.jiraAccountId)
+                        )
                     )
                 )
-            )
-            .asJson()
-            .body
+                .asJson()
+                .body
 
         return objectMapper.readValue<WorkLogs>(worksLogs.toString())
     }

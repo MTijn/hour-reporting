@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture
 @Service
 class GraphAuthenticationProvider() : BaseAuthenticationProvider() {
     private lateinit var client: OAuth2AuthorizedClient
+
     override fun getAuthorizationTokenAsync(url: URL): CompletableFuture<String> {
         return CompletableFuture.completedFuture(client.accessToken.tokenValue)
     }

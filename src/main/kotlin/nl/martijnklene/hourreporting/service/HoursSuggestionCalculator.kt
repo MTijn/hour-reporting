@@ -56,10 +56,11 @@ class HoursSuggestionCalculator(
                 return@forEach
             }
 
-            var duration = Duration.between(
-                LocalDateTime.parse(event.start!!.dateTime),
-                LocalDateTime.parse(event.end!!.dateTime)
-            )
+            var duration =
+                Duration.between(
+                    LocalDateTime.parse(event.start!!.dateTime),
+                    LocalDateTime.parse(event.end!!.dateTime)
+                )
 
             if (durationToEnterIntoTempo < duration) {
                 duration = durationToEnterIntoTempo
@@ -97,7 +98,10 @@ class HoursSuggestionCalculator(
         return suggestedTimeEntries
     }
 
-    fun suggestHoursForAnAuthenticatedUser(user: User, client: OAuth2AuthorizedClient): List<SuggestedTimeEntry> {
+    fun suggestHoursForAnAuthenticatedUser(
+        user: User,
+        client: OAuth2AuthorizedClient
+    ): List<SuggestedTimeEntry> {
         val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(user.jiraApiKey, client)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
         dates.forEach {

@@ -11,7 +11,10 @@ import java.time.*
 class HoursPoster(
     private val workLogPoster: WorkLogPoster
 ) {
-    fun createTimeEntries(postedParams: PostedHours, user: User) {
+    fun createTimeEntries(
+        postedParams: PostedHours,
+        user: User
+    ) {
         if (postedParams.hours.isNullOrEmpty()) {
             throw RuntimeException("Missing hours to be posted")
         }
@@ -29,12 +32,13 @@ class HoursPoster(
                     WorkLog(
                         timeSpentSeconds = duration.toSeconds().toInt(),
                         comment = postedDescriptions[index],
-                        started = ZonedDateTime.ofInstant(
-                            LocalDate.parse(it.key)
-                                .atStartOfDay()
-                                .toInstant(ZoneOffset.UTC),
-                            ZoneId.of("Europe/Amsterdam")
-                        )
+                        started =
+                            ZonedDateTime.ofInstant(
+                                LocalDate.parse(it.key)
+                                    .atStartOfDay()
+                                    .toInstant(ZoneOffset.UTC),
+                                ZoneId.of("Europe/Amsterdam")
+                            )
                     )
                 )
             }

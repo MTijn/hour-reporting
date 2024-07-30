@@ -9,9 +9,12 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
 @Configuration
 class FreemarkerConfiguration : BeanPostProcessor {
     @Throws(BeansException::class)
-    override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
+    override fun postProcessAfterInitialization(
+        bean: Any,
+        beanName: String
+    ): Any? {
         if (bean is FreeMarkerConfigurer) {
-            bean.configuration.objectWrapper = Java8ObjectWrapper(freemarker.template.Configuration.VERSION_2_3_32)
+            bean.configuration.objectWrapper = JavaObjectWrapper(freemarker.template.Configuration.VERSION_2_3_32)
         }
         return bean
     }

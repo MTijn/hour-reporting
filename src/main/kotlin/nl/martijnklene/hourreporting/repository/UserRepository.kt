@@ -14,15 +14,17 @@ class UserRepository(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper
 ) {
-    private val rowMapper = RowMapper { resultSet: ResultSet, _: Int ->
-        objectMapper.readValue(resultSet.getString("data"), User::class.java)
-    }
+    private val rowMapper =
+        RowMapper { resultSet: ResultSet, _: Int ->
+            objectMapper.readValue(resultSet.getString("data"), User::class.java)
+        }
 
     @Throws(Exception::class)
     fun save(user: User) {
-        val parameterSource = MapSqlParameterSource()
-            .addValue("id", user.id.toString())
-            .addValue("data", objectMapper.writeValueAsString(user))
+        val parameterSource =
+            MapSqlParameterSource()
+                .addValue("id", user.id.toString())
+                .addValue("data", objectMapper.writeValueAsString(user))
 
         jdbcTemplate.update(
             "insert into `user` (`id`, `data`) values (:id, :data)",
@@ -42,8 +44,9 @@ class UserRepository(
 
     @Throws(Exception::class)
     fun deleteUserById(id: UUID) {
-        val parameterSource = MapSqlParameterSource()
-            .addValue("id", id.toString())
+        val parameterSource =
+            MapSqlParameterSource()
+                .addValue("id", id.toString())
         jdbcTemplate.update("delete from `user` where id = :id", parameterSource)
     }
 }

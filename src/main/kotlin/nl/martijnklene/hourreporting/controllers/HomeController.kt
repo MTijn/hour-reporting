@@ -28,8 +28,9 @@ class HomeController(
         @RegisteredOAuth2AuthorizedClient("graph") client: OAuth2AuthorizedClient
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return RedirectView("/user/welcome")
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return RedirectView("/user/welcome")
 
         model.addAttribute("user", user)
         model.addAttribute(
@@ -49,8 +50,9 @@ class HomeController(
     ): RedirectView {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
 
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
-            ?: return RedirectView("/user/welcome")
+        val user =
+            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+                ?: return RedirectView("/user/welcome")
 
         hoursPoster.createTimeEntries(postedHours, user)
         return RedirectView("/")

@@ -13,22 +13,25 @@ import java.util.*
 class CategoryRepository(
     private val jdbcTemplate: JdbcTemplate
 ) {
-    private val rowMapper = RowMapper { resultSet: ResultSet, _: Int ->
-        Category(
-            userId = UUID.fromString(resultSet.getString("user_id")),
-            categoryName = resultSet.getString("category_name"),
-            id = resultSet.getInt("jira_project_id"),
-            jiraKey = resultSet.getString("jira_issue_key"),
-            default = resultSet.getBoolean("default")
-        )
-    }
+    private val rowMapper =
+        RowMapper { resultSet: ResultSet, _: Int ->
+            Category(
+                userId = UUID.fromString(resultSet.getString("user_id")),
+                categoryName = resultSet.getString("category_name"),
+                id = resultSet.getInt("jira_project_id"),
+                jiraKey = resultSet.getString("jira_issue_key"),
+                default = resultSet.getBoolean("default")
+            )
+        }
 
-    private val ignoredCategoryMapper = RowMapper { resultSet: ResultSet, _: Int ->
-        IgnoredCategory(
-            userId = UUID.fromString(resultSet.getString("user_id")),
-            name = resultSet.getString("name")
-        )
-    }
+    private val ignoredCategoryMapper =
+        RowMapper { resultSet: ResultSet, _: Int ->
+            IgnoredCategory(
+                userId = UUID.fromString(resultSet.getString("user_id")),
+                name = resultSet.getString("name")
+            )
+        }
+
     fun findConfiguredCategoriesForUser(user: User): Collection<Category> {
         return jdbcTemplate.query(
             "select * from category where user_id = ?",

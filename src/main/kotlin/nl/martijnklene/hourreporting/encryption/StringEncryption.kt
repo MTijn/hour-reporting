@@ -34,9 +34,10 @@ class StringEncryption(
     private fun createPrivateKeyFromString(): PrivateKey {
         val path: Path = Paths.get(privateKey)
         var privateKey = String(Files.readAllBytes(path))
-        privateKey = privateKey.replace("\\n".toRegex(), "")
-            .replace("-----BEGIN PRIVATE KEY-----", "")
-            .replace("-----END PRIVATE KEY-----", "")
+        privateKey =
+            privateKey.replace("\\n".toRegex(), "")
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
         val bytes = Base64.getDecoder().decode(privateKey)
 
         val kf = KeyFactory.getInstance("RSA")
@@ -48,9 +49,10 @@ class StringEncryption(
     private fun createPublicKeyFromString(): RSAPublicKey {
         val path: Path = Paths.get(publicKey)
         var publicKey = String(Files.readAllBytes(path))
-        publicKey = publicKey.replace("\\n".toRegex(), "")
-            .replace("-----BEGIN PUBLIC KEY-----", "")
-            .replace("-----END PUBLIC KEY-----", "")
+        publicKey =
+            publicKey.replace("\\n".toRegex(), "")
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
 
         val kf = KeyFactory.getInstance("RSA")
         val keySpecX509 = X509EncodedKeySpec(Base64.getDecoder().decode(publicKey))
