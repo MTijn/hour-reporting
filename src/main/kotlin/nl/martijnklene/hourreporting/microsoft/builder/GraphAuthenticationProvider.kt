@@ -1,17 +1,24 @@
 package nl.martijnklene.hourreporting.microsoft.builder
 
-import com.microsoft.graph.authentication.BaseAuthenticationProvider
+import com.microsoft.kiota.authentication.AccessTokenProvider
+import com.microsoft.kiota.authentication.AllowedHostsValidator
+import com.microsoft.kiota.authentication.BaseBearerTokenAuthenticationProvider
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.stereotype.Service
+import java.net.URI
 import java.net.URL
 import java.util.concurrent.CompletableFuture
 
 @Service
-class GraphAuthenticationProvider() : BaseAuthenticationProvider() {
+class GraphAuthenticationProvider() : AccessTokenProvider {
     private lateinit var client: OAuth2AuthorizedClient
 
-    override fun getAuthorizationTokenAsync(url: URL): CompletableFuture<String> {
-        return CompletableFuture.completedFuture(client.accessToken.tokenValue)
+    override fun getAuthorizationToken(uri: URI, additionalAuthenticationContext: MutableMap<String, Any>?): String {
+        return client.accessToken.tokenValue
+    }
+
+    override fun getAllowedHostsValidator(): AllowedHostsValidator {
+        return AllowedHostsValidator()
     }
 
     fun build(client: OAuth2AuthorizedClient): GraphAuthenticationProvider {

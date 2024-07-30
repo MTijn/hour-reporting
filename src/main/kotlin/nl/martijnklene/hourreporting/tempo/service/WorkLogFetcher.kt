@@ -2,7 +2,7 @@ package nl.martijnklene.hourreporting.tempo.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import kong.unirest.Unirest
+import kong.unirest.core.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLogRequest

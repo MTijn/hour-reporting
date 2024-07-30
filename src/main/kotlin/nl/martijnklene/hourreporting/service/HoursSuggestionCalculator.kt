@@ -28,7 +28,7 @@ class HoursSuggestionCalculator(
         workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).results.forEach {
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.timeSpentSeconds.toLong()))
         }
-        calendarService.getEventsForADay(date, client)!!.currentPage.forEach { event ->
+        calendarService.getEventsForADay(date, client).forEach { event ->
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
                 return@forEach
             }

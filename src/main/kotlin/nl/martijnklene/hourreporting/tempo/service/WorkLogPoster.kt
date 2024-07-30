@@ -1,7 +1,7 @@
 package nl.martijnklene.hourreporting.tempo.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import kong.unirest.Unirest
+import kong.unirest.core.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.tempo.dto.WorkLog
 import org.springframework.stereotype.Component
