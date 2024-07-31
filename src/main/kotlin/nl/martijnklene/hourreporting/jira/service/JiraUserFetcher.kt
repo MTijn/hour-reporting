@@ -2,7 +2,7 @@ package nl.martijnklene.hourreporting.jira.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import kong.unirest.Unirest
+import kong.unirest.core.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.jira.dto.Issue
 import nl.martijnklene.hourreporting.jira.dto.JiraAccount

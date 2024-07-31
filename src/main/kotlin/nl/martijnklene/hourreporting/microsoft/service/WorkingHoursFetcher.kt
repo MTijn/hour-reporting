@@ -10,9 +10,9 @@ class WorkingHoursFetcher(
     private val graphClientBuilder: GraphClientBuilder
 ) {
     fun findWorkingHoursFromAuthenticatedUser(client: OAuth2AuthorizedClient): WorkingHours? {
-        return graphClientBuilder.buildGraphClient(client)
-            .customRequest("/me/mailboxSettings/workingHours", WorkingHours::class.java)
-            .buildRequest()
-            .get()
+        val graphClient = graphClientBuilder.buildGraphClient(client)
+        val response = graphClient.me().mailboxSettings().get()
+
+        return response.workingHours
     }
 }
