@@ -11,7 +11,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
 @Component
 class CalendarEventsFetcher(
     private val graphClientBuilder: GraphClientBuilder
@@ -22,14 +21,15 @@ class CalendarEventsFetcher(
     ): List<Event> {
         val events = mutableListOf<Event>()
         val graphClient = graphClientBuilder.buildGraphClient(client)
-        val response = graphClient.me().calendarView().get { requestConfiguration ->
-            requestConfiguration.queryParameters.startDateTime =
-                date.atTime(7, 0).atZone(ZoneId.of("Europe/Amsterdam"))
-                    .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-            requestConfiguration.queryParameters.endDateTime =
-                date.atTime(19, 0).atZone(ZoneId.of("Europe/Amsterdam"))
-                    .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-        }
+        val response =
+            graphClient.me().calendarView().get { requestConfiguration ->
+                requestConfiguration.queryParameters.startDateTime =
+                    date.atTime(7, 0).atZone(ZoneId.of("Europe/Amsterdam"))
+                        .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                requestConfiguration.queryParameters.endDateTime =
+                    date.atTime(19, 0).atZone(ZoneId.of("Europe/Amsterdam"))
+                        .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            }
 
         PageIterator.Builder<Event, EventCollectionResponse>()
             .client(graphClient)

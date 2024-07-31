@@ -1,8 +1,6 @@
 package nl.martijnklene.hourreporting.microsoft.service
 
 import com.microsoft.graph.core.tasks.PageIterator
-import com.microsoft.graph.models.Event
-import com.microsoft.graph.models.EventCollectionResponse
 import com.microsoft.graph.models.OutlookCategory
 import com.microsoft.graph.models.OutlookCategoryCollectionResponse
 import nl.martijnklene.hourreporting.microsoft.builder.GraphClientBuilder
