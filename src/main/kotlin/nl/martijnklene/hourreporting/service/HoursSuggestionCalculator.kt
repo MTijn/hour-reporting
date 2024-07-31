@@ -32,7 +32,7 @@ class HoursSuggestionCalculator(
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
                 return@forEach
             }
-            if (event.responseStatus!!.response!!.name != "ACCEPTED" && event.responseStatus!!.response!!.name != "ORGANIZER") {
+            if (event.responseStatus!!.response!!.name != "Accepted" && event.responseStatus!!.response!!.name != "Organizer") {
                 return@forEach
             }
             val category = event.categories!!.firstOrNull()
@@ -41,8 +41,8 @@ class HoursSuggestionCalculator(
                 suggestedTimeEntries.add(
                     SuggestedTimeEntry(
                         durationToEnterIntoTempo,
-                        categoryMapper.mapCategoryToJiraTaskId(category, user)!!,
-                        categoryMapper.mapCategoryToJiraKey(category, user)!!,
+                        categoryMapper.mapCategoryToJiraTaskId(category, user) ?: 0,
+                        categoryMapper.mapCategoryToJiraKey(category, user) ?: "",
                         event.subject.toString(),
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
@@ -50,8 +50,8 @@ class HoursSuggestionCalculator(
                 return@forEach
             }
 
-            val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user)
-            val taskKey = categoryMapper.mapCategoryToJiraKey(category, user)
+            val taskId = categoryMapper.mapCategoryToJiraTaskId(category, user) ?: 0
+            val taskKey = categoryMapper.mapCategoryToJiraKey(category, user) ?: ""
             if (ignoredCategories.shouldCategoryBeIgnored(category, user)) {
                 return@forEach
             }
@@ -88,8 +88,8 @@ class HoursSuggestionCalculator(
         suggestedTimeEntries.add(
             SuggestedTimeEntry(
                 durationToEnterIntoTempo,
-                categoryMapper.mapCategoryToJiraTaskId("", user)!!,
-                categoryMapper.mapCategoryToJiraKey("", user)!!,
+                categoryMapper.mapCategoryToJiraTaskId("", user) ?: 0,
+                categoryMapper.mapCategoryToJiraKey("", user) ?: "",
                 "Meeting",
                 date
             )

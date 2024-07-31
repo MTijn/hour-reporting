@@ -17,11 +17,11 @@ class DatesSuggesterService(
     ): List<LocalDate> {
         val workingDays = workingHoursFetcher.findWorkingHoursFromAuthenticatedUser(client)!!.daysOfWeek
 
-        val firstDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).minusMonths(1)
-        val lastDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
+        val firstDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
+        val lastDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth())
 
         return firstDayOfLastMonth.datesUntil(lastDayOfLastMonth).filter { date ->
-            workingDays!!.map { it.name }.contains(date.dayOfWeek.name)
+            workingDays!!.map { it.name.uppercase() }.contains(date.dayOfWeek.name)
         }.collect(Collectors.toList())
     }
 }

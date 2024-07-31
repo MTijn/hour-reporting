@@ -23,7 +23,6 @@ class CalendarEventsFetcher(
         val events = mutableListOf<Event>()
         val graphClient = graphClientBuilder.buildGraphClient(client)
         val response = graphClient.me().calendarView().get { requestConfiguration ->
-            requestConfiguration.queryParameters.filter = "startDateTime"
             requestConfiguration.queryParameters.startDateTime =
                 date.atTime(7, 0).atZone(ZoneId.of("Europe/Amsterdam"))
                     .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)

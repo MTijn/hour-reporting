@@ -32,7 +32,7 @@
                         <tbody>
                         <#list suggestedEntries as suggestedEntry>
                             <tr>
-                                <td>${suggestedEntry.date.format('MEDIUM_DATE')}</td>
+                                <td>${suggestedEntry.date}</td>
                                 <td>${suggestedEntry.projectDescription}</td>
                                 <td>${suggestedEntry.taskKey}</td>
                                 <td>
