@@ -34,8 +34,8 @@ class HoursSuggestionCalculator(
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
                 return@forEach
             }
-            if (event.responseStatus!!.response!!.name != "Accepted"
-                && event.responseStatus!!.response!!.name != "Organizer"
+            if (event.responseStatus!!.response!!.name != "Accepted" &&
+                event.responseStatus!!.response!!.name != "Organizer"
             ) {
                 return@forEach
             }
