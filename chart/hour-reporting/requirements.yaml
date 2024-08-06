@@ -1,4 +1,0 @@
-dependencies:
-- name: summa-service-stack
-  repository: "@chartmuseum"
-  version: 7.3.0

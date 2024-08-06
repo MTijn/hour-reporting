@@ -1,1 +1,0 @@
-{{ template "summa-service-stack.service" (list . "summa-service-stack") }}

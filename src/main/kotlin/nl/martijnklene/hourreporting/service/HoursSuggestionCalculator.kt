@@ -25,16 +25,21 @@ class HoursSuggestionCalculator(
     ): Collection<SuggestedTimeEntry> {
         var durationToEnterIntoTempo = Duration.parse("PT8H")
         val suggestedTimeEntries = mutableListOf<SuggestedTimeEntry>()
+
         workLogFetcher.fetchWorkLogsBetweenDates(date, date, user).results.forEach {
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(Duration.ofSeconds(it.timeSpentSeconds.toLong()))
         }
+
         calendarService.getEventsForADay(date, client).forEach { event ->
             if (durationToEnterIntoTempo.isZero || durationToEnterIntoTempo.isNegative) {
                 return@forEach
             }
-            if (event.responseStatus!!.response!!.name != "Accepted" && event.responseStatus!!.response!!.name != "Organizer") {
+            if (event.responseStatus!!.response!!.name != "Accepted"
+                && event.responseStatus!!.response!!.name != "Organizer"
+            ) {
                 return@forEach
             }
+
             val category = event.categories!!.firstOrNull()
 
             if (event.isAllDay == true) {
