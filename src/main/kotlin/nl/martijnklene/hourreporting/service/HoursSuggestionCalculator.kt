@@ -52,6 +52,7 @@ class HoursSuggestionCalculator(
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
                 )
+                durationToEnterIntoTempo = durationToEnterIntoTempo.minus(durationToEnterIntoTempo)
                 return@forEach
             }
 
