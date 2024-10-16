@@ -17,7 +17,8 @@ class WorkLogPoster(
         item: WorkLog,
     ) {
         val response =
-            Unirest.post("https://enreach-services.atlassian.net/rest/api/2/issue/$issueKey/worklog")
+            Unirest
+                .post("https://enreach-services.atlassian.net/rest/api/2/issue/$issueKey/worklog")
                 .basicAuth("martijn.klene@enreach.com", encryption.decryptText(token))
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")

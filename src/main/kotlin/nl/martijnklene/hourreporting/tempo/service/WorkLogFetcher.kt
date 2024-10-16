@@ -34,8 +34,7 @@ class WorkLogFetcher(
                             authorIds = listOf(tempoUser.jiraAccountId)
                         )
                     )
-                )
-                .asJson()
+                ).asJson()
                 .body
 
         return objectMapper.readValue<WorkLogs>(worksLogs.toString())

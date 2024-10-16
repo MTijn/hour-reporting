@@ -16,16 +16,21 @@ class CategoriesFetcher(
         val categories = mutableListOf<OutlookCategory>()
 
         val graphClient = graphClientBuilder.buildGraphClient(client)
-        val response = graphClient.me().outlook().masterCategories().get()
+        val response =
+            graphClient
+                .me()
+                .outlook()
+                .masterCategories()
+                .get()
 
-        PageIterator.Builder<OutlookCategory, OutlookCategoryCollectionResponse>()
+        PageIterator
+            .Builder<OutlookCategory, OutlookCategoryCollectionResponse>()
             .client(graphClient)
             .collectionPage(Objects.requireNonNull(response))
             .collectionPageFactory(OutlookCategoryCollectionResponse::createFromDiscriminatorValue)
             .processPageItemCallback { category ->
                 categories.add(category)
-            }
-            .build()
+            }.build()
             .iterate()
         return categories
     }

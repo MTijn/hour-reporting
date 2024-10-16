@@ -32,13 +32,12 @@ class CategoryRepository(
             )
         }
 
-    fun findConfiguredCategoriesForUser(user: User): Collection<Category> {
-        return jdbcTemplate.query(
+    fun findConfiguredCategoriesForUser(user: User): Collection<Category> =
+        jdbcTemplate.query(
             "select * from category where user_id = ?",
             rowMapper,
             user.id.toString()
         )
-    }
 
     fun save(category: Category) {
         jdbcTemplate.update(
@@ -51,13 +50,12 @@ class CategoryRepository(
         )
     }
 
-    fun findIgnoredCategoriesForUser(user: User): Collection<IgnoredCategory> {
-        return jdbcTemplate.query(
+    fun findIgnoredCategoriesForUser(user: User): Collection<IgnoredCategory> =
+        jdbcTemplate.query(
             "select * from ignored_category where user_id = ?",
             ignoredCategoryMapper,
             user.id.toString()
         )
-    }
 
     fun saveIgnoredCategory(ignoredCategory: IgnoredCategory) {
         jdbcTemplate.update(

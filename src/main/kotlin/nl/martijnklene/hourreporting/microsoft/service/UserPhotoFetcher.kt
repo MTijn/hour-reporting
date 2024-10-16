@@ -9,13 +9,18 @@ import java.util.Base64
 class UserPhotoFetcher(
     private val graphClientBuilder: GraphClientBuilder
 ) {
-    fun fetchPhotoFromLoggedInUser(client: OAuth2AuthorizedClient): String {
-        return try {
+    fun fetchPhotoFromLoggedInUser(client: OAuth2AuthorizedClient): String =
+        try {
             Base64.getEncoder().encodeToString(
-                graphClientBuilder.buildGraphClient(client).me().photo().content().get()?.readAllBytes()
+                graphClientBuilder
+                    .buildGraphClient(client)
+                    .me()
+                    .photo()
+                    .content()
+                    .get()
+                    ?.readAllBytes()
             )
         } catch (exception: Exception) {
             ""
         }
-    }
 }

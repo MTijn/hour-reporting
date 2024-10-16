@@ -8,11 +8,11 @@ import javax.sql.DataSource
 @Configuration
 class DatabaseMigrationConfiguration {
     @Bean(initMethod = "migrate")
-    fun flyway(dataSource: DataSource): Flyway {
-        return Flyway.configure()
+    fun flyway(dataSource: DataSource): Flyway =
+        Flyway
+            .configure()
             .baselineOnMigrate(true)
             .dataSource(dataSource)
             .locations("classpath:db/migration/mysql")
             .load()
-    }
 }

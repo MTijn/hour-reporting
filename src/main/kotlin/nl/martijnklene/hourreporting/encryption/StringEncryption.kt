@@ -35,7 +35,8 @@ class StringEncryption(
         val path: Path = Paths.get(privateKey)
         var privateKey = String(Files.readAllBytes(path))
         privateKey =
-            privateKey.replace("\\n".toRegex(), "")
+            privateKey
+                .replace("\\n".toRegex(), "")
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
         val bytes = Base64.getDecoder().decode(privateKey)
@@ -50,7 +51,8 @@ class StringEncryption(
         val path: Path = Paths.get(publicKey)
         var publicKey = String(Files.readAllBytes(path))
         publicKey =
-            publicKey.replace("\\n".toRegex(), "")
+            publicKey
+                .replace("\\n".toRegex(), "")
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
 

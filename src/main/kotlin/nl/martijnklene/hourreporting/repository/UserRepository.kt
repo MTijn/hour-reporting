@@ -35,11 +35,12 @@ class UserRepository(
     @Throws(Exception::class)
     fun findUserById(id: UUID): User? {
         val parameterSource = MapSqlParameterSource().addValue("id", id.toString())
-        return jdbcTemplate.query(
-            "select * from user where id = :id",
-            parameterSource,
-            rowMapper
-        ).firstOrNull()
+        return jdbcTemplate
+            .query(
+                "select * from user where id = :id",
+                parameterSource,
+                rowMapper
+            ).firstOrNull()
     }
 
     @Throws(Exception::class)

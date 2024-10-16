@@ -16,8 +16,8 @@ class JiraUserFetcher(
     fun findUserDetails(
         userName: String,
         jiraToken: String
-    ): JiraAccount? {
-        return objectMapper.readValue<JiraAccount>(
+    ): JiraAccount? =
+        objectMapper.readValue<JiraAccount>(
             Unirest
                 .get("https://enreach-services.atlassian.net/rest/api/3/myself")
                 .basicAuth(userName, jiraToken)
@@ -25,14 +25,13 @@ class JiraUserFetcher(
                 .body
                 .toString()
         )
-    }
 
     fun findJiraIssuesByIssueKey(
         issueId: String,
         userName: String,
         jiraToken: String
-    ): Issue {
-        return objectMapper.readValue<Issue>(
+    ): Issue =
+        objectMapper.readValue<Issue>(
             Unirest
                 .get("https://enreach-services.atlassian.net/rest/api/3/issue/$issueId")
                 .basicAuth(userName, encryption.decryptText(jiraToken))
@@ -40,5 +39,4 @@ class JiraUserFetcher(
                 .body
                 .toString()
         )
-    }
 }

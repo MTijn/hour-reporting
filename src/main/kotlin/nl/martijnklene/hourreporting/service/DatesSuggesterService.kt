@@ -20,8 +20,10 @@ class DatesSuggesterService(
         val firstDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).minusMonths(1)
         val lastDayOfLastMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())
 
-        return firstDayOfLastMonth.datesUntil(lastDayOfLastMonth).filter { date ->
-            workingDays!!.map { it.name.uppercase() }.contains(date.dayOfWeek.name)
-        }.collect(Collectors.toList())
+        return firstDayOfLastMonth
+            .datesUntil(lastDayOfLastMonth)
+            .filter { date ->
+                workingDays!!.map { it.name.uppercase() }.contains(date.dayOfWeek.name)
+            }.collect(Collectors.toList())
     }
 }

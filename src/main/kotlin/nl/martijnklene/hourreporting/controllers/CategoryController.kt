@@ -38,7 +38,8 @@ class CategoryController(
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
             "categories",
-            categoriesFetcher.findCategoriesDefinedByTheUser(client)
+            categoriesFetcher
+                .findCategoriesDefinedByTheUser(client)
                 .map { it.toCategoryDto(categoryRepository.findConfiguredCategoriesForUser(user)) }
         )
         return "categories"
@@ -78,7 +79,8 @@ class CategoryController(
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
             "categories",
-            categoriesFetcher.findCategoriesDefinedByTheUser(client)
+            categoriesFetcher
+                .findCategoriesDefinedByTheUser(client)
                 .map { it.toIgnoredCategory(categoryRepository.findIgnoredCategoriesForUser(user)) }
         )
         return "ignore_categories"

@@ -111,7 +111,8 @@ class HoursSuggestionCalculator(
         val dates = datesSuggesterService.suggestDaysForTheAuthenticatedUser(user.jiraApiKey, client)
         val suggestedEntries = mutableListOf<SuggestedTimeEntry>()
         dates.forEach {
-            this.suggestHoursForADay(it, client, user)
+            this
+                .suggestHoursForADay(it, client, user)
                 .forEach { suggestedTimeEntry -> suggestedEntries.add(suggestedTimeEntry) }
         }
         return suggestedEntries

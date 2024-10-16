@@ -34,7 +34,8 @@ class HoursPoster(
                         comment = postedDescriptions[index],
                         started =
                             ZonedDateTime.ofInstant(
-                                LocalDate.parse(it.key)
+                                LocalDate
+                                    .parse(it.key)
                                     .atStartOfDay()
                                     .toInstant(ZoneOffset.UTC),
                                 ZoneId.of("Europe/Amsterdam")

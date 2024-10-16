@@ -7,19 +7,15 @@ import org.springframework.stereotype.Service
 import java.net.URI
 
 @Service
-class GraphAuthenticationProvider() : AccessTokenProvider {
+class GraphAuthenticationProvider : AccessTokenProvider {
     private lateinit var client: OAuth2AuthorizedClient
 
     override fun getAuthorizationToken(
         uri: URI,
         additionalAuthenticationContext: MutableMap<String, Any>?
-    ): String {
-        return client.accessToken.tokenValue
-    }
+    ): String = client.accessToken.tokenValue
 
-    override fun getAllowedHostsValidator(): AllowedHostsValidator {
-        return AllowedHostsValidator()
-    }
+    override fun getAllowedHostsValidator(): AllowedHostsValidator = AllowedHostsValidator()
 
     fun build(client: OAuth2AuthorizedClient): GraphAuthenticationProvider {
         this.client = client
