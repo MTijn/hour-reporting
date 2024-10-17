@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-alpine
 
 RUN apk -U upgrade --ignore alpine-baselayout
 
-COPY target/*.jar /app.jar
+COPY staging/*.jar /app.jar
 
 EXPOSE 8080
 
