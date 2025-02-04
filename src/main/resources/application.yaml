@@ -11,7 +11,10 @@ spring:
         authorization-clients:
           graph:
             scopes:
-              - ${app.microsoft.client.scopes:openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read}
+              - openid
+              - profile
+              - https://graph.microsoft.com/Calendars.Read
+              - https://graph.microsoft.com/MailboxSettings.Read
   freemarker:
     suffix: .ftl
   datasource:
