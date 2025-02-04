@@ -1,0 +1,31 @@
+spring:
+  config:
+    import: "optional:configtree:/var/run/secrets/"
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        credential:
+          client-id: ${app.microsoft.client.id:your-client-id}
+          client-secret: ${app.microsoft.client.secret:your-client-secret}
+        authorization-clients:
+          graph:
+            scopes:
+              - ${app.microsoft.client.scopes:openid,profile,https://graph.microsoft.com/Calendars.Read,https://graph.microsoft.com/MailboxSettings.Read}
+  freemarker:
+    suffix: .ftl
+  datasource:
+    url: jdbc:postgresql://${app.hourreporting.host:localhost}:5432/${app.hourreporting.schema:hour_reporting}
+    username: ${app.hourreporting.username:username}
+    password: ${app.hourreporting.password:password}
+    hikari:
+      maximum-pool-size: ${app.hourreporting.poolsize:2}
+  flyway:
+    locations: db/migration/{vendor}
+  main:
+    allow-bean-definition-overriding: true
+
+encryption:
+  key:
+    private: config/private_key.pem
+    public: config/public_key.pem
