@@ -97,10 +97,12 @@ class CategoryController(
         val ignoredCategoriesToUpdate = mutableListOf<nl.martijnklene.hourreporting.model.IgnoredCategory>()
         if (!ignoredCategories.categories.isNullOrEmpty()) {
             ignoredCategories.categories?.filter { it.isNotEmpty() }?.forEach {
-                ignoredCategoriesToUpdate.add(nl.martijnklene.hourreporting.model.IgnoredCategory(
-                    userId = user.id,
-                    name = it
-                ))
+                ignoredCategoriesToUpdate.add(
+                    nl.martijnklene.hourreporting.model.IgnoredCategory(
+                        userId = user.id,
+                        name = it
+                    )
+                )
             }
         }
         user.ignoredCategories = ignoredCategoriesToUpdate

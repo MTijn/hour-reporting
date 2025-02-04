@@ -4,7 +4,7 @@ import nl.martijnklene.hourreporting.model.User
 import org.springframework.stereotype.Component
 
 @Component
-class CategoryMapper() {
+class CategoryMapper {
     fun mapCategoryToJiraTaskId(
         task: String?,
         user: User
