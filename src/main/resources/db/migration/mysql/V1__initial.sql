@@ -1,24 +1,24 @@
-create table `user`
+CREATE TABLE category
 (
-    `id` char(36) not null,
-    `name` varchar(255) not null,
-    `jira_api_key` text not null,
-    `jira_user_name` VARCHAR(255) NOT NULL,
-    `photo` text not null
+    user_id         uuid         NOT NULL,
+    category_name   varchar(255) NOT NULL,
+    jira_project_id uuid         NOT NULL,
+    jira_issue_key  varchar(255) NOT NULL,
+    "default"       bool DEFAULT NULL,
+    CONSTRAINT category_udx UNIQUE (user_id, category_name)
 );
 
-create table `category`
+CREATE TABLE ignored_category
 (
-    `user_id` char(36) not null,
-    `outlook_category_id` char(36),
-    `jira_project_id` varchar(36) not null,
-    `default` bool,
-    constraint category_udx unique (user_id, outlook_category_id)
+    user_id uuid         NOT NULL,
+    name    varchar(255) NOT NULL,
+    CONSTRAINT user_category_udx UNIQUE (user_id, name)
 );
 
-create table `ignored_category`
+CREATE TABLE "user"
 (
-    `user_id` char(36) not null,
-    `name` varchar(255) not null,
-    UNIQUE INDEX `user_category_udx` (`user_id` ASC, `name` ASC)
+    id   uuid NOT NULL,
+    data json DEFAULT NULL,
+    PRIMARY KEY (id)
 );
+-- Dump completed on 2025-02-03 14:28:01

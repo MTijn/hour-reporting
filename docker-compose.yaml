@@ -1,11 +1,7 @@
 services:
   db:
-    image: registry.k8s.ispworks.nl/library/mysql-jenkins-multi-schema:5.7
+    image: postgres:16-alpine
     environment:
-      MYSQL_SCHEMAS: hour_reporting
+      - POSTGRES_PASSWORD=jenkins-root-password
     ports:
-      - "3310:3306"
-    ulimits:
-      nofile: # Fix memory leak issue on some systems when LimitCORE=infinity (containerd)
-        soft: 1048576
-        hard: 1048576
+      - "5432:5432"

@@ -36,13 +36,13 @@ class CategoryRepository(
         jdbcTemplate.query(
             "select * from category where user_id = ?",
             rowMapper,
-            user.id.toString()
+            user.id
         )
 
     fun save(category: Category) {
         jdbcTemplate.update(
-            "replace into `category` (`user_id`, `category_name`, `jira_project_id`, `jira_issue_key`, `default`) values (?, ?, ?, ?, ?)",
-            category.userId.toString(),
+            "insert into category (user_id, category_name, jira_project_id, jira_issue_key, default) values (?, ?, ?, ?, ?)",
+            category.userId,
             category.categoryName,
             category.id,
             category.jiraKey,
@@ -54,21 +54,21 @@ class CategoryRepository(
         jdbcTemplate.query(
             "select * from ignored_category where user_id = ?",
             ignoredCategoryMapper,
-            user.id.toString()
+            user.id
         )
 
     fun saveIgnoredCategory(ignoredCategory: IgnoredCategory) {
         jdbcTemplate.update(
-            "replace into `ignored_category` (`user_id`, `name`) values (?, ?)",
-            ignoredCategory.userId.toString(),
+            "insert into ignored_category (user_id, name) values (?, ?)",
+            ignoredCategory.userId,
             ignoredCategory.name
         )
     }
 
     fun deleteIgnoredCategories(user: User) {
         jdbcTemplate.update(
-            "delete from `ignored_category` where `user_id` = ?",
-            user.id.toString()
+            "delete from ignored_category where user_id = ?",
+            user.id
         )
     }
 }

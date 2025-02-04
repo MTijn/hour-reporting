@@ -2,6 +2,7 @@ package nl.martijnklene.hourreporting.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import nl.martijnklene.hourreporting.model.User
+import org.postgresql.util.PGobject
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -16,28 +17,32 @@ class UserRepository(
 ) {
     private val rowMapper =
         RowMapper { resultSet: ResultSet, _: Int ->
-            objectMapper.readValue(resultSet.getString("data"), User::class.java)
+            val result = resultSet.getObject("data") as PGobject
+            objectMapper.readValue(result.getValue(), User::class.java)
         }
 
     @Throws(Exception::class)
     fun save(user: User) {
+        val postgres = PGobject()
+        postgres.type = "json"
+        postgres.value = objectMapper.writeValueAsString(user)
         val parameterSource =
             MapSqlParameterSource()
-                .addValue("id", user.id.toString())
-                .addValue("data", objectMapper.writeValueAsString(user))
+                .addValue("id", user.id)
+                .addValue("data", postgres)
 
         jdbcTemplate.update(
-            "insert into `user` (`id`, `data`) values (:id, :data)",
+            "insert into \"user\" (id, data) values (:id, :data) on conflict (id) do update set data = :data",
             parameterSource
         )
     }
 
     @Throws(Exception::class)
     fun findUserById(id: UUID): User? {
-        val parameterSource = MapSqlParameterSource().addValue("id", id.toString())
+        val parameterSource = MapSqlParameterSource().addValue("id", id)
         return jdbcTemplate
             .query(
-                "select * from user where id = :id",
+                "select * from \"user\" where id = :id",
                 parameterSource,
                 rowMapper
             ).firstOrNull()
@@ -48,6 +53,6 @@ class UserRepository(
         val parameterSource =
             MapSqlParameterSource()
                 .addValue("id", id.toString())
-        jdbcTemplate.update("delete from `user` where id = :id", parameterSource)
+        jdbcTemplate.update("delete from \"user\" where id = :id", parameterSource)
     }
 }
