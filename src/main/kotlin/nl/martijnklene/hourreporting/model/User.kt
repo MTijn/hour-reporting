@@ -5,8 +5,8 @@ import java.util.*
 data class User(
     val id: UUID,
     val name: String,
-    val categories: List<Category>,
-    val ignoredCategories: List<IgnoredCategory>,
+    var categories: List<Category>,
+    var ignoredCategories: List<IgnoredCategory>,
     val jiraApiKey: String,
     val tempoApiKey: String,
     val jiraUserName: String,

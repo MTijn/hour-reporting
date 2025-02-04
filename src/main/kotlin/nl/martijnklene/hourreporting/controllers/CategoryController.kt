@@ -7,7 +7,6 @@ import nl.martijnklene.hourreporting.controllers.response.PostedCategoryMapping
 import nl.martijnklene.hourreporting.controllers.response.PostedIgnoredCategories
 import nl.martijnklene.hourreporting.jira.service.JiraUserFetcher
 import nl.martijnklene.hourreporting.microsoft.service.CategoriesFetcher
-import nl.martijnklene.hourreporting.repository.CategoryRepository
 import nl.martijnklene.hourreporting.repository.UserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
@@ -23,7 +22,6 @@ import java.util.*
 class CategoryController(
     private val userRepository: UserRepository,
     private val categoriesFetcher: CategoriesFetcher,
-    private val categoryRepository: CategoryRepository,
     private val jiraIssueFetcher: JiraUserFetcher
 ) {
     @GetMapping("/categories")
@@ -40,7 +38,7 @@ class CategoryController(
             "categories",
             categoriesFetcher
                 .findCategoriesDefinedByTheUser(client)
-                .map { it.toCategoryDto(categoryRepository.findConfiguredCategoriesForUser(user)) }
+                .map { it.toCategoryDto(user.categories) }
         )
         return "categories"
     }
@@ -52,9 +50,10 @@ class CategoryController(
             userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
                 ?: return "redirect:/"
 
+        val categories = mutableListOf<nl.martijnklene.hourreporting.model.Category>()
         postedForm.categories?.filter { it.value.isNotEmpty() }?.forEach {
             val jiraIssue = jiraIssueFetcher.findJiraIssuesByIssueKey(it.value, user.jiraUserName, user.jiraApiKey)
-            categoryRepository.save(
+            categories.add(
                 nl.martijnklene.hourreporting.model.Category(
                     userId = user.id,
                     id = jiraIssue.id,
@@ -64,6 +63,8 @@ class CategoryController(
                 )
             )
         }
+        user.categories = categories
+        userRepository.save(user)
         return "redirect:categories"
     }
 
@@ -81,7 +82,7 @@ class CategoryController(
             "categories",
             categoriesFetcher
                 .findCategoriesDefinedByTheUser(client)
-                .map { it.toIgnoredCategory(categoryRepository.findIgnoredCategoriesForUser(user)) }
+                .map { it.toIgnoredCategory(user.ignoredCategories) }
         )
         return "ignore_categories"
     }
@@ -93,18 +94,17 @@ class CategoryController(
             userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
                 ?: return "redirect:/"
 
-        if (ignoredCategories.categories.isNullOrEmpty()) {
-            categoryRepository.deleteIgnoredCategories(user)
-        } else {
+        val ignoredCategoriesToUpdate = mutableListOf<nl.martijnklene.hourreporting.model.IgnoredCategory>()
+        if (!ignoredCategories.categories.isNullOrEmpty()) {
             ignoredCategories.categories?.filter { it.isNotEmpty() }?.forEach {
-                categoryRepository.saveIgnoredCategory(
-                    nl.martijnklene.hourreporting.model.IgnoredCategory(
-                        userId = user.id,
-                        name = it
-                    )
-                )
+                ignoredCategoriesToUpdate.add(nl.martijnklene.hourreporting.model.IgnoredCategory(
+                    userId = user.id,
+                    name = it
+                ))
             }
         }
+        user.ignoredCategories = ignoredCategoriesToUpdate
+        userRepository.save(user)
         return "redirect:/categories/ignored"
     }
 
