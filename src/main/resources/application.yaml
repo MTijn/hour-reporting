@@ -35,3 +35,7 @@ encryption:
 
 server:
   forward-headers-strategy: native
+
+logging:
+  level:
+    org.springframework.security: DEBUG
