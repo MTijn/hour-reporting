@@ -33,6 +33,9 @@ encryption:
     private: config/private_key.pem
     public: config/public_key.pem
 
+server:
+  forward-headers-strategy: framework
+
 logging:
   level:
     org.springframework.security: DEBUG
