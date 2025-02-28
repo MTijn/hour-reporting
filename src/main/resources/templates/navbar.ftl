@@ -21,6 +21,7 @@
                         >
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user">Configure tokens</a></li>
                         <li><a class="dropdown-item" href="/categories">Configure categories</a></li>
                         <li><a class="dropdown-item" href="/categories/ignored">Configure ignored categories</a></li>
                         <li>

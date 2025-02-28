@@ -37,6 +37,15 @@ class UserController(
         return "welcome"
     }
 
+    @GetMapping("/user")
+    fun user(modelMap: ModelMap): Any {
+        val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
+        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+
+        modelMap.addAttribute("userName", authentication.name)
+        return "user"
+    }
+
     @PostMapping("/user")
     fun createUser(
         @ModelAttribute user: UserDto,
