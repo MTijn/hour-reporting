@@ -78,7 +78,7 @@ class HoursSuggestionCalculator(
                         duration,
                         taskId.or(0),
                         taskKey.orEmpty(),
-                        event.subject.toString(),
+                        event.subject?.toString() ?: "Meeting",
                         LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                     )
                 )
