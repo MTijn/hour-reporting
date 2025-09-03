@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>3.5.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.martijnklene</groupId>
@@ -16,7 +16,7 @@
     <properties>
         <java.version>21</java.version>
         <azure.version>3.12.0</azure.version>
-        <kotlin.version>2.2.0</kotlin.version>
+        <kotlin.version>2.2.10</kotlin.version>
         <ktlint.version>1.7.1</ktlint.version>
         <kotlin.compiler.languageVersion>2.2</kotlin.compiler.languageVersion>
         <kotlin.compiler.apiVersion>2.2</kotlin.compiler.apiVersion>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>2.4</version>
+            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,10 +50,12 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>11.11.2</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
+            <version>11.11.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -68,7 +70,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.19.2</version>
+            <version>2.20.0</version>
         </dependency>
 
         <dependency>
@@ -90,17 +92,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.55.5</version>
+            <version>1.56.0</version>
         </dependency>
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
-            <version>5.22.0</version>
+            <version>5.23.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.graph</groupId>
             <artifactId>microsoft-graph</artifactId>
-            <version>6.47.0</version>
+            <version>6.51.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -110,7 +112,7 @@
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java-core</artifactId>
-            <version>4.5.0</version>
+            <version>4.5.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

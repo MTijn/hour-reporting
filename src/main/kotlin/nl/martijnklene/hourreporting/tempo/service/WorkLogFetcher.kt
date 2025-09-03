@@ -23,7 +23,7 @@ class WorkLogFetcher(
     ): WorkLogs {
         val worksLogs =
             Unirest
-                .post("https://api.tempo.io/4/worklogs/search?limit=500")
+                .post("https://api.eu.tempo.io/4/worklogs/search?limit=500")
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer ${encryption.decryptText(tempoUser.tempoApiKey)}")
                 .body(
