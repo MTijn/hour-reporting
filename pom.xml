@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>3.5.9</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.martijnklene</groupId>
@@ -14,12 +14,12 @@
     <name>hour-reporting</name>
     <description>Hour Reporting</description>
     <properties>
-        <java.version>24</java.version>
+        <java.version>25</java.version>
         <azure.version>3.12.0</azure.version>
-        <kotlin.version>2.2.21</kotlin.version>
+        <kotlin.version>2.3.0</kotlin.version>
         <ktlint.version>1.8.0</ktlint.version>
-        <kotlin.compiler.languageVersion>2.2</kotlin.compiler.languageVersion>
-        <kotlin.compiler.apiVersion>2.2</kotlin.compiler.apiVersion>
+        <kotlin.compiler.languageVersion>2.3</kotlin.compiler.languageVersion>
+        <kotlin.compiler.apiVersion>2.3</kotlin.compiler.apiVersion>
     </properties>
     <dependencies>
         <dependency>
@@ -50,12 +50,12 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>11.17.0</version>
+            <version>11.20.2</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
-            <version>11.17.0</version>
+            <version>11.20.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -70,13 +70,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.20.0</version>
+            <version>2.20.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.8</version>
+            <version>42.7.9</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -92,17 +92,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.57.0</version>
+            <version>1.57.1</version>
         </dependency>
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
-            <version>6.0.0</version>
+            <version>6.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.graph</groupId>
             <artifactId>microsoft-graph</artifactId>
-            <version>6.57.0</version>
+            <version>6.60.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java-core</artifactId>
-            <version>4.6.0</version>
+            <version>4.7.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -152,7 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>ktlint</id>

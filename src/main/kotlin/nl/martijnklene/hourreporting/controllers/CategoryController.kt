@@ -31,7 +31,7 @@ class CategoryController(
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return "redirect:/"
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
@@ -47,7 +47,7 @@ class CategoryController(
     fun changeMapping(postedForm: PostedCategoryMapping): String {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return "redirect:/"
 
         val categories = mutableListOf<nl.martijnklene.hourreporting.model.Category>()
@@ -75,7 +75,7 @@ class CategoryController(
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return "redirect:/"
         modelMap.addAttribute("user", user)
         modelMap.addAttribute(
@@ -91,7 +91,7 @@ class CategoryController(
     fun changeIgnoredMapping(ignoredCategories: PostedIgnoredCategories): String {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return "redirect:/"
 
         val ignoredCategoriesToUpdate = mutableListOf<nl.martijnklene.hourreporting.model.IgnoredCategory>()

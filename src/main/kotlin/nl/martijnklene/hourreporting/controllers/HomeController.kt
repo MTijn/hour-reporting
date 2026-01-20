@@ -29,7 +29,7 @@ class HomeController(
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return RedirectView("/user/welcome")
 
         model.addAttribute("user", user)
@@ -51,7 +51,7 @@ class HomeController(
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
 
         val user =
-            userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
+            userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
                 ?: return RedirectView("/user/welcome")
 
         hoursPoster.createTimeEntries(postedHours, user)
