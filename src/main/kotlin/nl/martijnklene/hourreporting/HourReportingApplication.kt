@@ -2,9 +2,9 @@ package nl.martijnklene.hourreporting
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @SpringBootApplication
 class HourReportingApplication
 
