@@ -21,7 +21,7 @@ class WorkLogFetcher(
         end: LocalDate,
         tempoUser: User
     ): WorkLogs {
-        val worksLogs =
+        val response =
             Unirest
                 .post("https://api.eu.tempo.io/4/worklogs/search?limit=500")
                 .header("Content-Type", "application/json")
@@ -35,8 +35,15 @@ class WorkLogFetcher(
                         )
                     )
                 ).asJson()
-                .body
 
-        return objectMapper.readValue<WorkLogs>(worksLogs.toString())
+        if (response.status == 400 || response.status == 401) {
+            return WorkLogs(
+                self = "",
+                metadata = LinkedHashMap(),
+                results = emptyList()
+            )
+        }
+
+        return objectMapper.readValue<WorkLogs>(response.body.toString())
     }
 }
