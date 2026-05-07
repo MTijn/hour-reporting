@@ -57,7 +57,14 @@ class UserController(
 
         val client = OkHttpClient()
         val request = Request.Builder().url(jiraUser!!.avatarUrls["48x48"]!!).build()
-        val userImage = Base64.getEncoder().encodeToString(client.newCall(request).execute().body?.bytes())
+        val userImage =
+            Base64.getEncoder().encodeToString(
+                client
+                    .newCall(request)
+                    .execute()
+                    .body
+                    ?.bytes()
+            )
 
         userRepository.save(
             User(
