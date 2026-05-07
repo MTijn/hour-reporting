@@ -3,9 +3,10 @@ package nl.martijnklene.hourreporting.controllers
 import nl.martijnklene.hourreporting.controllers.response.UserDto
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.jira.service.JiraUserFetcher
-import nl.martijnklene.hourreporting.microsoft.service.UserPhotoFetcher
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.repository.UserRepository
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient
@@ -23,7 +24,6 @@ import java.util.*
 class UserController(
     private val userRepository: UserRepository,
     private val encryption: StringEncryption,
-    private val userPhotoFetcher: UserPhotoFetcher,
     private val jiraUserFetcher: JiraUserFetcher
 ) {
     @GetMapping("/user/welcome")
@@ -53,8 +53,12 @@ class UserController(
     ): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
 
-        val userImage = userPhotoFetcher.fetchPhotoFromLoggedInUser(client)
         val jiraUser = jiraUserFetcher.findUserDetails(user.jiraUserName, user.jiraApiKey)
+
+        val client = OkHttpClient()
+        val request = Request.Builder().url(jiraUser!!.avatarUrls["48x48"]!!).build()
+        val userImage = Base64.getEncoder().encodeToString(client.newCall(request).execute().body?.bytes())
+
         userRepository.save(
             User(
                 UUID.fromString(authentication.principal!!.attributes["oid"].toString()),

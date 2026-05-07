@@ -5,7 +5,7 @@ data class JiraAccount(
     val accountType: String,
     val active: Boolean,
     val applicationRoles: LinkedHashMap<String, Any>,
-    val avatarUrls: LinkedHashMap<String, Any>,
+    val avatarUrls: LinkedHashMap<String, String>,
     val displayName: String,
     val emailAddress: String,
     val groups: LinkedHashMap<String, Any>,
