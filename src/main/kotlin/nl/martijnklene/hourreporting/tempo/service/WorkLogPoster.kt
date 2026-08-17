@@ -1,15 +1,15 @@
 package nl.martijnklene.hourreporting.tempo.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import kong.unirest.core.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.tempo.dto.WorkLog
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 
 @Component
 class WorkLogPoster(
     private val encryption: StringEncryption,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: JsonMapper
 ) {
     fun postWorkLogItem(
         token: String,

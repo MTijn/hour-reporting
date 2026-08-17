@@ -1,19 +1,19 @@
 package nl.martijnklene.hourreporting.tempo.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import kong.unirest.core.Unirest
 import nl.martijnklene.hourreporting.encryption.StringEncryption
 import nl.martijnklene.hourreporting.model.User
 import nl.martijnklene.hourreporting.tempo.dto.WorkLogRequest
 import nl.martijnklene.hourreporting.tempo.model.WorkLogs
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.readValue
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Component
 class WorkLogFetcher(
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: JsonMapper,
     private val encryption: StringEncryption
 ) {
     fun fetchWorkLogsBetweenDates(

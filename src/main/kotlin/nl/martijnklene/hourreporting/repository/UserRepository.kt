@@ -1,19 +1,19 @@
 package nl.martijnklene.hourreporting.repository
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import nl.martijnklene.hourreporting.model.User
 import org.postgresql.util.PGobject
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 import java.util.*
 
 @Repository
 class UserRepository(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: JsonMapper
 ) {
     private val rowMapper =
         RowMapper { resultSet: ResultSet, _: Int ->
