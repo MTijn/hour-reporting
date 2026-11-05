@@ -26,7 +26,7 @@ class CategoriesFetcher(
         PageIterator
             .Builder<OutlookCategory, OutlookCategoryCollectionResponse>()
             .client(graphClient)
-            .collectionPage(Objects.requireNonNull(response))
+            .collectionPage(requireNotNull(response))
             .collectionPageFactory(OutlookCategoryCollectionResponse::createFromDiscriminatorValue)
             .processPageItemCallback { category ->
                 categories.add(category)

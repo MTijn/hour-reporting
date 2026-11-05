@@ -23,12 +23,12 @@ class CalendarEventsFetcher(
         val graphClient = graphClientBuilder.buildGraphClient(client)
         val response =
             graphClient.me().calendarView().get { requestConfiguration ->
-                requestConfiguration.queryParameters.startDateTime =
+                requestConfiguration.queryParameters!!.startDateTime =
                     date
                         .atTime(7, 0)
                         .atZone(ZoneId.of("Europe/Amsterdam"))
                         .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                requestConfiguration.queryParameters.endDateTime =
+                requestConfiguration.queryParameters!!.endDateTime =
                     date
                         .atTime(19, 0)
                         .atZone(ZoneId.of("Europe/Amsterdam"))
@@ -38,7 +38,7 @@ class CalendarEventsFetcher(
         PageIterator
             .Builder<Event, EventCollectionResponse>()
             .client(graphClient)
-            .collectionPage(Objects.requireNonNull(response))
+            .collectionPage(requireNotNull(response))
             .collectionPageFactory(EventCollectionResponse::createFromDiscriminatorValue)
             .processPageItemCallback { event ->
                 events.add(event)

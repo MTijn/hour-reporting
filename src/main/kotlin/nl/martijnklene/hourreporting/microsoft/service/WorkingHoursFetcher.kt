@@ -13,6 +13,6 @@ class WorkingHoursFetcher(
         val graphClient = graphClientBuilder.buildGraphClient(client)
         val response = graphClient.me().mailboxSettings().get()
 
-        return response.workingHours
+        return response?.workingHours
     }
 }
