@@ -29,7 +29,7 @@ class UserController(
     @GetMapping("/user/welcome")
     fun welcomeUser(modelMap: ModelMap): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
+        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
         if (user != null) {
             return "redirect:/"
         }
@@ -40,7 +40,7 @@ class UserController(
     @GetMapping("/user")
     fun user(modelMap: ModelMap): Any {
         val authentication = SecurityContextHolder.getContext().authentication as OAuth2AuthenticationToken
-        val user = userRepository.findUserById(UUID.fromString(authentication.principal!!.attributes["oid"].toString()))
+        val user = userRepository.findUserById(UUID.fromString(authentication.principal.attributes["oid"].toString()))
 
         modelMap.addAttribute("userName", authentication.name)
         return "user"
@@ -68,13 +68,13 @@ class UserController(
 
         userRepository.save(
             User(
-                UUID.fromString(authentication.principal!!.attributes["oid"].toString()),
+                UUID.fromString(authentication.principal.attributes["oid"].toString()),
                 authentication.name,
                 emptyList(),
                 emptyList(),
                 encryption.encryptText(user.jiraApiKey),
                 encryption.encryptText(user.tempoApiKey),
-                jiraUser!!.emailAddress,
+                jiraUser.emailAddress,
                 jiraUser.accountId,
                 userImage
             )

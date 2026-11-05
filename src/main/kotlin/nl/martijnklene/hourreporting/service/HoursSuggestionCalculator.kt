@@ -72,17 +72,15 @@ class HoursSuggestionCalculator(
                 duration = durationToEnterIntoTempo
             }
 
-            if (taskId != null) {
-                suggestedTimeEntries.add(
-                    SuggestedTimeEntry(
-                        duration,
-                        taskId.or(0),
-                        taskKey.orEmpty(),
-                        event.subject?.toString() ?: "Meeting",
-                        LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
-                    )
+            suggestedTimeEntries.add(
+                SuggestedTimeEntry(
+                    duration,
+                    taskId,
+                    taskKey,
+                    event.subject ?: "Meeting",
+                    LocalDateTime.parse(event.start!!.dateTime).toLocalDate()
                 )
-            }
+            )
 
             durationToEnterIntoTempo = durationToEnterIntoTempo.minus(duration)
         }
