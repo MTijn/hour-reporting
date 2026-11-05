@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0</version>
+        <version>4.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.martijnklene</groupId>
@@ -15,11 +15,11 @@
     <description>Hour Reporting</description>
     <properties>
         <java.version>25</java.version>
-        <kotlin.version>2.3.21</kotlin.version>
+        <kotlin.version>2.4.21</kotlin.version>
         <ktlint.version>1.8.0</ktlint.version>
-        <kotlin.compiler.languageVersion>2.3</kotlin.compiler.languageVersion>
-        <kotlin.compiler.apiVersion>2.3</kotlin.compiler.apiVersion>
-        <unirest.version>4.10.1</unirest.version>
+        <kotlin.compiler.languageVersion>2.4</kotlin.compiler.languageVersion>
+        <kotlin.compiler.apiVersion>2.4</kotlin.compiler.apiVersion>
+        <unirest.version>4.11.3</unirest.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.13</version>
+            <version>42.7.14</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.microsoft.graph</groupId>
             <artifactId>microsoft-graph</artifactId>
-            <version>6.67.0</version>
+            <version>6.72.0</version>
         </dependency>
         <dependency>
             <groupId>com.konghq</groupId>
